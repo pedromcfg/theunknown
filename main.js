@@ -789,9 +789,14 @@ function syncUIFromState() {
   document.querySelectorAll('.clima-card').forEach((btn) => {
     const val = btn.getAttribute('data-clima');
     if (state.clima === val) {
-      btn.classList.add('border-brand', 'bg-brand-softer');
+      btn.classList.add(
+        'border-brand',
+        'bg-brand-softer',
+        'dark:bg-brand-softer',
+        'text-brand'
+      );
     } else {
-      btn.classList.remove('border-brand', 'bg-brand-softer');
+      btn.classList.remove('border-brand', 'bg-brand-softer', 'dark:bg-brand-softer', 'text-brand');
     }
   });
 
@@ -799,9 +804,14 @@ function syncUIFromState() {
   document.querySelectorAll('.bagagem-card').forEach((btn) => {
     const val = btn.getAttribute('data-bagagem');
     if (state.bagagem === val) {
-      btn.classList.add('border-brand', 'bg-brand-softer');
+      btn.classList.add(
+        'border-brand',
+        'bg-brand-softer',
+        'dark:bg-brand-softer',
+        'text-brand'
+      );
     } else {
-      btn.classList.remove('border-brand', 'bg-brand-softer');
+      btn.classList.remove('border-brand', 'bg-brand-softer', 'dark:bg-brand-softer', 'text-brand');
     }
   });
 
@@ -1094,10 +1104,12 @@ function setupAuth() {
   const loginTab = document.getElementById('loginTab');
   const registerTab = document.getElementById('registerTab');
   const passwordConfirmGroup = document.getElementById('passwordConfirmGroup');
+  const emailGroup = document.getElementById('emailGroup');
   const authTitle = document.getElementById('authTitle');
   const authSubmitBtn = document.getElementById('authSubmitBtn');
   const authForm = document.getElementById('authForm');
   const usernameInput = document.getElementById('authUsername');
+  const emailInput = document.getElementById('authEmail');
   const passwordInput = document.getElementById('authPassword');
   const passwordConfirmInput = document.getElementById('authPasswordConfirm');
   const userInfo = document.getElementById('userInfo');
@@ -1109,6 +1121,7 @@ function setupAuth() {
     !loginTab ||
     !registerTab ||
     !passwordConfirmGroup ||
+    !emailGroup ||
     !authForm
   ) {
     return;
@@ -1122,15 +1135,23 @@ function setupAuth() {
       registerTab.classList.remove('bg-white', 'shadow-sm', 'text-brand');
       registerTab.classList.add('text-slate-500');
       passwordConfirmGroup.classList.add('hidden');
+      emailGroup.classList.add('hidden');
       authTitle.textContent = 'Sign in to The Unknown';
       authSubmitBtn.textContent = 'Sign in';
+      // Update label for login to indicate username or email
+      const usernameLabel = document.querySelector('label[for="authUsername"]');
+      if (usernameLabel) usernameLabel.textContent = 'Username or Email';
     } else {
       registerTab.classList.add('bg-white', 'shadow-sm', 'text-brand');
       loginTab.classList.remove('bg-white', 'shadow-sm', 'text-brand');
       loginTab.classList.add('text-slate-500');
       passwordConfirmGroup.classList.remove('hidden');
+      emailGroup.classList.remove('hidden');
       authTitle.textContent = 'Create an account in The Unknown';
       authSubmitBtn.textContent = 'Sign up';
+      // Update label for register
+      const usernameLabel = document.querySelector('label[for="authUsername"]');
+      if (usernameLabel) usernameLabel.textContent = 'Username';
     }
   }
 
@@ -1147,6 +1168,7 @@ function setupAuth() {
   authForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const username = usernameInput.value.trim();
+    const email = emailInput ? emailInput.value.trim() : '';
     const password = passwordInput.value;
 
     if (!username || !password) {
@@ -1170,7 +1192,17 @@ function setupAuth() {
         showToast('A user with that name already exists.', 'error');
         return;
       }
-      users[username] = { password };
+      // Check if email is already used
+      if (email) {
+        const emailExists = Object.keys(users).some(
+          (key) => users[key].email && users[key].email.toLowerCase() === email.toLowerCase()
+        );
+        if (emailExists) {
+          showToast('An account with that email already exists.', 'error');
+          return;
+        }
+      }
+      users[username] = { password, email: email || '' };
       saveUsers(users);
       setActiveUser(username);
       if (userNameLabel) userNameLabel.textContent = username;
@@ -1184,13 +1216,32 @@ function setupAuth() {
       syncUIFromState();
       showToast('Account created successfully. Welcome!', 'success');
     } else {
-      // login
-      if (!users[username] || users[username].password !== password) {
+      // login - pode ser username ou email
+      let foundUser = null;
+      let foundUsername = null;
+
+      // Primeiro tenta por username
+      if (users[username] && users[username].password === password) {
+        foundUser = users[username];
+        foundUsername = username;
+      } else {
+        // Se não encontrar, procura por email
+        for (const [key, user] of Object.entries(users)) {
+          if (user.email && user.email.toLowerCase() === username.toLowerCase() && user.password === password) {
+            foundUser = user;
+            foundUsername = key;
+            break;
+          }
+        }
+      }
+
+      if (!foundUser) {
         showToast('Invalid credentials.', 'error');
         return;
       }
-      setActiveUser(username);
-      if (userNameLabel) userNameLabel.textContent = username;
+
+      setActiveUser(foundUsername);
+      if (userNameLabel) userNameLabel.textContent = foundUsername;
       if (userInfo) userInfo.classList.remove('hidden');
       authSection.classList.add('hidden');
       appShell.classList.remove('hidden');

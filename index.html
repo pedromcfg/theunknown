@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-PT" class="h-full">
+<html lang="en" class="h-full">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Unknown - Perfil de Viagem</title>
+    <title>The Unknown - Travel Profile</title>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -38,7 +38,7 @@
     <script src="https://unpkg.com/heroicons@2.1.5/dist/heroicons.js" defer></script>
 
     <style>
-      /* Pequena melhoria de scroll suave */
+      /* Smooth scroll */
       html {
         scroll-behavior: smooth;
       }
@@ -65,35 +65,29 @@
           </div>
 
           <div class="flex items-center gap-4">
-            <!-- Navegação -->
+            <!-- Navigation -->
             <nav class="hidden sm:flex items-center gap-4 text-sm font-medium">
               <button
                 data-nav="home"
                 class="nav-link text-brand hover:text-brand-light px-2 py-1 rounded-full"
               >
-                Perfil
+                Profile
               </button>
               <button
                 data-nav="paises"
                 class="nav-link text-slate-600 hover:text-brand-light px-2 py-1 rounded-full"
               >
-                Países
+                Countries
               </button>
               <button
                 data-nav="visitados"
                 class="nav-link text-slate-600 hover:text-brand-light px-2 py-1 rounded-full"
               >
-                Países visitados
-              </button>
-              <button
-                data-nav="roteiros"
-                class="nav-link text-slate-600 hover:text-brand-light px-2 py-1 rounded-full"
-              >
-                Roteiros
+                Visited countries
               </button>
             </nav>
 
-            <!-- Utilizador atual -->
+            <!-- Current user -->
             <div
               id="userInfo"
               class="hidden sm:flex items-center gap-2 text-xs sm:text-sm text-slate-600 dark:text-slate-200"
@@ -104,7 +98,7 @@
                 id="logoutBtn"
                 class="ml-1 inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[0.7rem] font-medium text-slate-700 shadow-sm hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 dark:hover:bg-slate-700"
               >
-                Sair
+                Logout
               </button>
             </div>
 
@@ -113,7 +107,7 @@
               id="themeToggle"
               class="ml-2 inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 dark:hover:bg-slate-700"
             >
-              <span class="mr-1" id="themeLabel">Claro</span>
+              <span class="mr-1" id="themeLabel">Light</span>
               <span aria-hidden="true">🌞</span>
             </button>
           </div>
@@ -121,7 +115,7 @@
       </header>
 
       <!-- Main Content -->
-      <!-- Autenticação -->
+      <!-- Authentication -->
       <section
         id="authSection"
         class="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8"
@@ -131,10 +125,10 @@
         >
           <div class="mb-6 text-center space-y-1">
             <h2 id="authTitle" class="text-lg sm:text-xl font-semibold">
-              Entrar em The Unknown
+              Sign in to The Unknown
             </h2>
             <p class="text-xs sm:text-sm text-slate-500">
-              Crie uma conta simples ou entre para guardar o seu perfil de viagem.
+              Create a simple account or sign in to save your travel profile.
             </p>
           </div>
 
@@ -143,19 +137,19 @@
               id="loginTab"
               class="flex-1 px-3 py-1.5 rounded-full font-medium bg-white shadow-sm text-brand"
             >
-              Login
+              Sign in
             </button>
             <button
               id="registerTab"
               class="flex-1 px-3 py-1.5 rounded-full font-medium text-slate-500 hover:text-brand"
             >
-              Registo
+              Sign up
             </button>
           </div>
 
           <form id="authForm" class="space-y-4 text-sm">
             <div>
-              <label class="block font-medium mb-1" for="authUsername">Nome de utilizador</label>
+              <label class="block font-medium mb-1" for="authUsername">Username</label>
               <input
                 type="text"
                 id="authUsername"
@@ -165,7 +159,7 @@
               />
             </div>
             <div>
-              <label class="block font-medium mb-1" for="authPassword">Palavra-passe</label>
+              <label class="block font-medium mb-1" for="authPassword">Password</label>
               <input
                 type="password"
                 id="authPassword"
@@ -176,7 +170,7 @@
             </div>
             <div id="passwordConfirmGroup" class="hidden">
               <label class="block font-medium mb-1" for="authPasswordConfirm"
-                >Confirmar palavra-passe</label
+                >Confirm password</label
               >
               <input
                 type="password"
@@ -191,12 +185,12 @@
               id="authSubmitBtn"
               class="w-full inline-flex items-center justify-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand"
             >
-              Entrar
+              Sign in
             </button>
 
             <p class="text-[0.7rem] text-slate-500 leading-snug">
-              Os dados de login e todo o seu perfil são guardados apenas neste dispositivo, usando
-              <span class="font-semibold">Local Storage</span>. Não é necessário servidor.
+              Login data and your entire profile are stored only on this device using
+              <span class="font-semibold">Local Storage</span>. No server is required.
             </p>
           </form>
         </div>
@@ -207,15 +201,15 @@
           id="homeSection"
           class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6"
         >
-          <!-- Progress + ações rápidas -->
+          <!-- Progress + quick actions -->
           <div class="grid gap-4 sm:grid-cols-3 items-center">
             <div class="sm:col-span-2">
               <div class="flex items-center justify-between mb-1">
                 <p class="text-xs font-medium text-slate-600 uppercase tracking-wide">
-                  Progresso do perfil
+                  Profile progress
                 </p>
                 <p class="text-xs font-semibold text-brand">
-                  <span id="progressLabel">0%</span> concluído
+                  <span id="progressLabel">0%</span> complete
                 </p>
               </div>
               <div class="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden">
@@ -231,17 +225,17 @@
                 id="exportJsonBtn"
                 class="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100"
               >
-                <span>Exportar JSON</span>
+                <span>Export JSON</span>
               </button>
             </div>
           </div>
 
           <!-- Layout principal -->
           <div class="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(260px,1fr)] items-start">
-            <!-- Formulário Perfil -->
+            <!-- Profile form -->
             <section
               id="perfilSection"
-              aria-label="Formulário de Perfil de Viagem"
+              aria-label="Travel Profile Form"
               class="space-y-6"
             >
               <!-- Passaporte e Vistos -->
@@ -253,12 +247,12 @@
                     class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-softer text-brand text-sm font-semibold"
                     >1</span
                   >
-                  Passaporte &amp; Vistos
+                  Passport &amp; Visas
                 </h2>
 
                 <div class="space-y-4 text-sm">
                   <div>
-                    <p class="font-medium mb-2">Tem passaporte?</p>
+                    <p class="font-medium mb-2">Do you have a passport?</p>
                     <div class="flex flex-wrap gap-3">
                       <label class="inline-flex items-center gap-2 cursor-pointer">
                         <input
@@ -267,7 +261,7 @@
                           value="sim"
                           class="text-brand focus:ring-brand"
                         />
-                        <span>Sim</span>
+                        <span>Yes</span>
                       </label>
                       <label class="inline-flex items-center gap-2 cursor-pointer">
                         <input
@@ -276,14 +270,14 @@
                           value="nao"
                           class="text-brand focus:ring-brand"
                         />
-                        <span>Não</span>
+                        <span>No</span>
                       </label>
                     </div>
                   </div>
 
                   <div id="vistosGroup" class="space-y-4 hidden">
                     <div>
-                      <p class="font-medium mb-2">Tem visto?</p>
+                      <p class="font-medium mb-2">Do you have a visa?</p>
                       <div class="flex flex-wrap gap-3">
                         <label class="inline-flex items-center gap-2 cursor-pointer">
                           <input
@@ -292,7 +286,7 @@
                             value="sim"
                             class="text-brand focus:ring-brand"
                           />
-                          <span>Sim</span>
+                          <span>Yes</span>
                         </label>
                         <label class="inline-flex items-center gap-2 cursor-pointer">
                           <input
@@ -301,13 +295,13 @@
                             value="nao"
                             class="text-brand focus:ring-brand"
                           />
-                          <span>Não</span>
+                          <span>No</span>
                         </label>
                       </div>
                     </div>
 
                     <div id="vistoDispostoGroup" class="hidden">
-                      <p class="font-medium mb-2">Estaria disposto a tirar visto?</p>
+                      <p class="font-medium mb-2">Would you be willing to obtain a visa?</p>
                       <div class="flex flex-wrap gap-3">
                         <label class="inline-flex items-center gap-2 cursor-pointer">
                           <input
@@ -316,7 +310,7 @@
                             value="sim"
                             class="text-brand focus:ring-brand"
                           />
-                          <span>Sim</span>
+                          <span>Yes</span>
                         </label>
                         <label class="inline-flex items-center gap-2 cursor-pointer">
                           <input
@@ -325,7 +319,7 @@
                             value="nao"
                             class="text-brand focus:ring-brand"
                           />
-                          <span>Não</span>
+                          <span>No</span>
                         </label>
                       </div>
                     </div>
@@ -342,13 +336,13 @@
                     class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-softer text-brand text-sm font-semibold"
                     >2</span
                   >
-                  Questionário de Preferências
+                  Preferences questionnaire
                 </h2>
 
                 <div class="space-y-6 text-sm">
                   <!-- Tipo de viagem -->
                   <div>
-                    <p class="font-medium mb-2">Tipo de viagem (pode escolher vários)</p>
+                    <p class="font-medium mb-2">Type of trip (you can choose more than one)</p>
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs sm:text-sm">
                       <label
                         class="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
@@ -370,7 +364,7 @@
                           name="tipoViagem"
                           value="solPraia"
                         />
-                        <span>Sol e Praia</span>
+                        <span>Sun &amp; beach</span>
                       </label>
                       <label
                         class="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
@@ -381,7 +375,7 @@
                           name="tipoViagem"
                           value="natureza"
                         />
-                        <span>Natureza</span>
+                        <span>Nature</span>
                       </label>
                       <label
                         class="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
@@ -392,7 +386,7 @@
                           name="tipoViagem"
                           value="religioso"
                         />
-                        <span>Religioso</span>
+                        <span>Religious</span>
                       </label>
                       <label
                         class="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
@@ -403,7 +397,7 @@
                           name="tipoViagem"
                           value="gastronomico"
                         />
-                        <span>Gastronómico</span>
+                        <span>Gastronomic</span>
                       </label>
                       <label
                         class="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
@@ -414,66 +408,66 @@
                           name="tipoViagem"
                           value="aventura"
                         />
-                        <span>Aventura</span>
+                        <span>Adventure</span>
                       </label>
                     </div>
                   </div>
 
                   <!-- Clima preferido -->
                   <div>
-                    <p class="font-medium mb-2">Clima preferido</p>
+                    <p class="font-medium mb-2">Preferred climate</p>
                     <div class="grid grid-cols-3 gap-3 text-xs sm:text-sm" id="climaGroup">
                       <button
                         type="button"
                         data-clima="quente"
                         class="clima-card rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 flex flex-col items-center gap-1 hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
                       >
-                        <span>Quente</span>
+                        <span>Warm</span>
                       </button>
                       <button
                         type="button"
                         data-clima="temperado"
                         class="clima-card rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 flex flex-col items-center gap-1 hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
                       >
-                        <span>Temperado</span>
+                        <span>Mild</span>
                       </button>
                       <button
                         type="button"
                         data-clima="frio"
                         class="clima-card rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 flex flex-col items-center gap-1 hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
                       >
-                        <span>Frio</span>
+                        <span>Cold</span>
                       </button>
                     </div>
                   </div>
 
                   <!-- Tipo de bagagem -->
                   <div>
-                    <p class="font-medium mb-2">Tipo de bagagem</p>
+                    <p class="font-medium mb-2">Type of luggage</p>
                     <div class="grid gap-3 sm:grid-cols-3 text-xs sm:text-sm" id="bagagemGroup">
                       <button
                         type="button"
                         data-bagagem="mao10"
                         class="bagagem-card flex flex-col items-start gap-1 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-left hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
                       >
-                        <span class="font-medium">Mala de mão 10kg</span>
-                        <span class="text-xs text-slate-500">Ideal para viagens curtas</span>
+                        <span class="font-medium">Cabin bag 10kg</span>
+                        <span class="text-xs text-slate-500">Ideal for short trips</span>
                       </button>
                       <button
                         type="button"
                         data-bagagem="porao20"
                         class="bagagem-card flex flex-col items-start gap-1 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-left hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
                       >
-                        <span class="font-medium">Mala porão 20kg +€</span>
-                        <span class="text-xs text-slate-500">Mais espaço para conforto</span>
+                        <span class="font-medium">Hold luggage 20kg +€</span>
+                        <span class="text-xs text-slate-500">More space for comfort</span>
                       </button>
                       <button
                         type="button"
                         data-bagagem="porao50"
                         class="bagagem-card flex flex-col items-start gap-1 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-left hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
                       >
-                        <span class="font-medium">Mala porão 50kg +€</span>
-                        <span class="text-xs text-slate-500">Ideal para longas estadias</span>
+                        <span class="font-medium">Hold luggage 50kg +€</span>
+                        <span class="text-xs text-slate-500">Ideal for long stays</span>
                       </button>
                     </div>
                   </div>
@@ -482,7 +476,7 @@
                   <div class="grid gap-4 sm:grid-cols-2">
                     <div>
                       <label class="block font-medium mb-2" for="dataInicio">
-                        Data de início
+                        Start date
                       </label>
                       <input
                         type="date"
@@ -492,7 +486,7 @@
                     </div>
                     <div>
                       <label class="block font-medium mb-2" for="dataFim">
-                        Data de fim
+                        End date
                       </label>
                       <input
                         type="date"
@@ -504,92 +498,181 @@
                 </div>
               </div>
 
-              <!-- Botões de ação -->
+              <!-- Mystery trip -->
+              <div
+                class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
+              >
+                <h2 class="text-base sm:text-lg font-semibold mb-3 flex items-center gap-2">
+                  <span
+                    class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-softer text-brand text-sm font-semibold"
+                    >3</span
+                  >
+                  Mystery trip
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-500 mb-4">
+                  In this experience, the final destination is a secret until you arrive at the
+                  airport. Here you can only see the logistical details of your trip.
+                </p>
+
+                <div class="space-y-4 text-sm">
+                  <div>
+                    <p class="font-medium mb-1">Departure airport</p>
+                    <p id="misterioAeroporto" class="text-slate-700 dark:text-slate-200">
+                      Aeroporto Francisco Sá Carneiro (Porto)
+                    </p>
+                  </div>
+
+                  <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label class="block font-medium mb-1" for="misterioDataHora">
+                        Flight date &amp; time
+                      </label>
+                      <input
+                        type="datetime-local"
+                        id="misterioDataHora"
+                        class="mt-1 block w-full rounded-xl border-slate-200 bg-white py-2 px-3 text-sm shadow-sm focus:border-brand focus:ring-brand dark:bg-slate-900 dark:border-slate-700"
+                      />
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <p class="font-medium mb-1">Gate</p>
+                        <p
+                          id="misterioPortaEmbarque"
+                          class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-100"
+                        >
+                          —
+                        </p>
+                      </div>
+                      <div>
+                        <p class="font-medium mb-1">Aircraft door</p>
+                        <p
+                          id="misterioPortaAviao"
+                          class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-100"
+                        >
+                          —
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="grid gap-4 sm:grid-cols-3 items-center">
+                    <div>
+                      <p class="font-medium mb-1">Row</p>
+                      <p
+                        id="misterioFila"
+                        class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-100"
+                      >
+                        —
+                      </p>
+                    </div>
+                    <div>
+                      <p class="font-medium mb-1">Seat</p>
+                      <p
+                        id="misterioLugar"
+                        class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-100"
+                      >
+                        —
+                      </p>
+                    </div>
+                    <div class="flex sm:justify-end mt-2 sm:mt-0">
+                      <button
+                        type="button"
+                        id="gerarMisterioBtn"
+                        class="inline-flex items-center justify-center rounded-full border border-brand bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-brand shadow-sm hover:bg-brand-softer dark:bg-slate-900 dark:text-brand dark:border-brand"
+                      >
+                        Generate mystery trip
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action buttons -->
               <div class="flex flex-wrap gap-3">
                 <button
                   id="saveProfileBtn"
                   class="inline-flex items-center justify-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand"
                 >
-                  Salvar Perfil
+                  Save profile
                 </button>
                 <button
                   id="loadProfileBtn"
                   class="inline-flex items-center justify-center gap-2 rounded-full bg-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-800 shadow-sm hover:bg-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-400 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
                 >
-                  Carregar Perfil
+                  Load profile
                 </button>
                 <button
                   id="clearProfileBtn"
                   class="inline-flex items-center justify-center gap-2 rounded-full bg-red-100 px-5 py-2.5 text-sm font-semibold text-red-700 shadow-sm hover:bg-red-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-400 dark:bg-red-900/30 dark:text-red-200"
                 >
-                  Limpar
+                  Clear
                 </button>
               </div>
             </section>
 
-            <!-- Painel Lateral / Resumo -->
+            <!-- Side panel / Summary -->
             <aside
               class="space-y-4 lg:space-y-5 bg-transparent lg:bg-transparent"
-              aria-label="Resumo do Perfil"
+              aria-label="Profile summary"
             >
               <div
                 class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
               >
                 <div class="flex items-center justify-between mb-3">
-                  <h2 class="text-base font-semibold">Resumo em tempo real</h2>
+                  <h2 class="text-base font-semibold">Live summary</h2>
                   <span
                     id="answersCount"
                     class="inline-flex items-center rounded-full bg-brand-softer px-2.5 py-1 text-xs font-medium text-brand"
-                    >0 respostas</span
+                    >0 answers</span
                   >
                 </div>
 
                 <dl class="space-y-3 text-sm">
                   <div class="flex justify-between gap-4">
-                    <dt class="text-slate-500">Passaporte</dt>
+                    <dt class="text-slate-500">Passport</dt>
                     <dd id="resumoPassaporte" class="font-medium text-right">—</dd>
                   </div>
                   <div class="flex justify-between gap-4">
-                    <dt class="text-slate-500">Visto</dt>
+                    <dt class="text-slate-500">Visa</dt>
                     <dd id="resumoVisto" class="font-medium text-right">—</dd>
                   </div>
                   <div class="flex justify-between gap-4">
-                    <dt class="text-slate-500">Clima</dt>
+                    <dt class="text-slate-500">Climate</dt>
                     <dd id="resumoClima" class="font-medium text-right">—</dd>
                   </div>
                   <div class="flex justify-between gap-4">
-                    <dt class="text-slate-500">Tipo de viagem</dt>
+                    <dt class="text-slate-500">Trip type</dt>
                     <dd id="resumoTipoViagem" class="font-medium text-right">—</dd>
                   </div>
                   <div class="flex justify-between gap-4">
-                    <dt class="text-slate-500">Datas</dt>
+                    <dt class="text-slate-500">Dates</dt>
                     <dd id="resumoDatas" class="font-medium text-right">—</dd>
                   </div>
                   <div class="flex justify-between gap-4">
-                    <dt class="text-slate-500">Bagagem</dt>
+                    <dt class="text-slate-500">Luggage</dt>
                     <dd id="resumoBagagem" class="font-medium text-right">—</dd>
                   </div>
                 </dl>
 
                 <div class="mt-5 border-t border-slate-100 pt-4 dark:border-slate-800">
                   <p class="text-xs uppercase tracking-wide text-slate-500 mb-1">
-                    Países já visitados
+                    Countries already visited
                   </p>
                   <p
                     id="resumoPaisesVisitados"
                     class="text-sm font-medium text-slate-800 dark:text-slate-100"
                   >
-                    Nenhum selecionado
+                    None selected
                   </p>
                 </div>
               </div>
 
-              <!-- Score & Recomendações -->
+              <!-- Score & Recommendations -->
               <div
                 class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
               >
                 <div class="flex items-center justify-between mb-3">
-                  <h2 class="text-base font-semibold">Compatibilidade &amp; Recomendações</h2>
+                  <h2 class="text-base font-semibold">Compatibility &amp; Recommendations</h2>
                   <span
                     id="scoreBadge"
                     class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-200"
@@ -598,33 +681,33 @@
                 </div>
 
                 <p class="text-xs text-slate-500 mb-3">
-                  Baseado nas preferências indicadas, sugerimos alguns destinos alinhados com o
-                  seu perfil.
+                  Based on the preferences indicated, we suggest some destinations aligned with your
+                  profile.
                 </p>
 
                 <div id="recomendacoesLista" class="space-y-2 text-sm">
                   <p class="text-slate-500 text-sm">
-                    Complete o perfil para ver recomendações personalizadas.
+                    Complete your profile to see personalised recommendations.
                   </p>
                 </div>
               </div>
 
-              <!-- Países acessíveis -->
+              <!-- Accessible countries -->
               <div
                 class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
               >
                 <div class="flex items-center justify-between mb-3">
-                  <h2 class="text-base font-semibold">Países acessíveis</h2>
+                  <h2 class="text-base font-semibold">Accessible countries</h2>
                 </div>
                 <p class="text-xs text-slate-500 mb-3">
-                  Lista baseada no seu passaporte, vistos e disposição para tirar novos vistos.
+                  List based on your passport, visas, and willingness to obtain new visas.
                 </p>
                 <ul
                   id="paisesAcessiveisLista"
                   class="text-sm space-y-1 max-h-40 overflow-y-auto pr-1"
                 >
                   <li class="text-slate-500 text-sm">
-                    Complete as informações de passaporte e vistos para ver esta lista.
+                    Complete your passport and visa information to see this list.
                   </li>
                 </ul>
               </div>
@@ -632,28 +715,28 @@
           </div>
         </section>
 
-        <!-- Secção Países visitados / Been -->
+        <!-- Visited countries section -->
         <section
           id="visitadosSection"
           class="hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6"
         >
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="text-lg sm:text-xl font-semibold mb-1">Países visitados</h2>
+              <h2 class="text-lg sm:text-xl font-semibold mb-1">Visited countries</h2>
               <p class="text-sm text-slate-600">
-                Marque os países onde já esteve e visualize o seu mapa de viagens.
+                Select the countries you have already visited and visualise your travel map.
               </p>
             </div>
           </div>
 
           <div class="grid gap-6 lg:grid-cols-2 items-start">
-            <!-- Lista de países -->
+            <!-- Country list -->
             <div
               class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
             >
-              <h3 class="text-base font-semibold mb-3">Lista de países</h3>
+              <h3 class="text-base font-semibold mb-3">Country list</h3>
               <p class="text-xs text-slate-500 mb-4">
-                Utilize a coluna “Já visitei” para registar os destinos onde já esteve.
+                Use the “Visited” column to register the destinations you have already been to.
               </p>
               <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
                 <table class="min-w-full text-xs sm:text-sm">
@@ -661,9 +744,9 @@
                     class="bg-slate-50 text-slate-600 dark:bg-slate-800 dark:text-slate-300"
                   >
                     <tr>
-                      <th class="px-3 py-2 text-left font-medium">País</th>
-                      <th class="px-3 py-2 text-left font-medium">Continente</th>
-                      <th class="px-3 py-2 text-center font-medium">Já visitei</th>
+                      <th class="px-3 py-2 text-left font-medium">Country</th>
+                      <th class="px-3 py-2 text-left font-medium">Continent</th>
+                      <th class="px-3 py-2 text-center font-medium">Visited</th>
                     </tr>
                   </thead>
                   <tbody
@@ -676,13 +759,13 @@
               </div>
             </div>
 
-            <!-- Mapa do mundo estilizado -->
+            <!-- Stylised world map -->
             <div
               class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
             >
               <div class="flex items-center justify-between mb-3">
-                <h3 class="text-base font-semibold">Mapa de viagens</h3>
-                <span class="text-xs text-slate-500">Ver países visitados em destaque</span>
+                <h3 class="text-base font-semibold">Travel map</h3>
+                <span class="text-xs text-slate-500">See visited countries highlighted</span>
               </div>
               <div
                 id="worldMap"
@@ -691,181 +774,80 @@
                 <!-- preenchido por JS -->
               </div>
               <p class="mt-3 text-xs text-slate-500 leading-snug">
-                Este é um mapa estilizado do mundo, onde cada país existente na aplicação surge
-                destacado em função de já ter sido visitado (cor mais intensa) ou não (cor suave).
+                This is a stylised world map where each country in the application is highlighted
+                depending on whether it has already been visited (stronger colour) or not (softer
+                colour).
               </p>
             </div>
           </div>
         </section>
 
-        <!-- Secção Países -->
+        <!-- Countries section -->
         <section
           id="paisesSection"
           class="hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6"
         >
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="text-lg sm:text-xl font-semibold mb-1">Países &amp; Acessibilidade</h2>
+              <h2 class="text-lg sm:text-xl font-semibold mb-1">Countries &amp; Access</h2>
               <p class="text-sm text-slate-600">
-                Consulte os destinos, o tipo de visto associado e o estado de acesso com base no seu
-                perfil.
+                Check destinations, visa requirements, and access status based on your profile.
               </p>
             </div>
           </div>
 
-          <!-- Filtros -->
+          <!-- Filters -->
           <div
             class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-5 dark:bg-slate-900 dark:border-slate-800"
           >
             <div class="grid gap-4 sm:grid-cols-3 text-sm">
               <div>
-                <label class="block font-medium mb-1" for="filtroContinente">Continente</label>
+                <label class="block font-medium mb-1" for="filtroContinente">Continent</label>
                 <select
                   id="filtroContinente"
                   class="mt-1 block w-full rounded-xl border-slate-200 bg-white py-2 px-3 text-sm shadow-sm focus:border-brand focus:ring-brand dark:bg-slate-900 dark:border-slate-700"
                 >
-                  <option value="">Todos</option>
-                  <option value="Europa">Europa</option>
-                  <option value="América">América</option>
-                  <option value="Ásia">Ásia</option>
-                  <option value="África">África</option>
+                  <option value="">All</option>
+                  <option value="Europa">Europe</option>
+                  <option value="América">America</option>
+                  <option value="Ásia">Asia</option>
+                  <option value="África">Africa</option>
                   <option value="Oceania">Oceania</option>
                 </select>
               </div>
               <div>
-                <label class="block font-medium mb-1" for="filtroVisto">Tipo de visto</label>
+                <label class="block font-medium mb-1" for="filtroVisto">Visa type</label>
                 <select
                   id="filtroVisto"
                   class="mt-1 block w-full rounded-xl border-slate-200 bg-white py-2 px-3 text-sm shadow-sm focus:border-brand focus:ring-brand dark:bg-slate-900 dark:border-slate-700"
                 >
-                  <option value="">Todos</option>
-                  <option value="naoPrecisa">Não precisa</option>
-                  <option value="necessita">Necessita</option>
+                  <option value="">All</option>
+                  <option value="naoPrecisa">Not required</option>
+                  <option value="necessita">Required</option>
                   <option value="onArrival">Visa on arrival</option>
                 </select>
               </div>
               <div>
-                <label class="block font-medium mb-1" for="filtroStatus">Status de acesso</label>
+                <label class="block font-medium mb-1" for="filtroStatus">Access status</label>
                 <select
                   id="filtroStatus"
                   class="mt-1 block w-full rounded-xl border-slate-200 bg-white py-2 px-3 text-sm shadow-sm focus:border-brand focus:ring-brand dark:bg-slate-900 dark:border-slate-700"
                 >
-                  <option value="">Todos</option>
-                  <option value="Liberado">Livre</option>
-                  <option value="Restrito">Com restrições</option>
+                  <option value="">All</option>
+                  <option value="Liberado">Available</option>
+                  <option value="Restrito">Unavailable</option>
                 </select>
               </div>
             </div>
           </div>
 
-          <!-- Grid de países -->
+          <!-- Countries grid -->
           <div
             id="countriesGrid"
             class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
           ></div>
         </section>
 
-        <!-- Secção Roteiros / Storytelling -->
-        <section
-          id="roteirosSection"
-          class="hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6"
-        >
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <h2 class="text-lg sm:text-xl font-semibold mb-1">Roteiros inspiradores</h2>
-              <p class="text-sm text-slate-600">
-                Explore roteiros modelo preparados pela empresa. Este é um template que poderá ser
-                adaptado mais tarde.
-              </p>
-            </div>
-          </div>
-
-          <div class="grid gap-5 lg:grid-cols-3">
-            <!-- Template de roteiro 1 -->
-            <article
-              class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 flex flex-col gap-3 dark:bg-slate-900 dark:border-slate-800"
-            >
-              <header>
-                <h3 class="text-base font-semibold">Roteiro Cultural em Capital Europeia</h3>
-                <p class="text-xs text-slate-500 mt-1">Duração sugerida: 4 dias / 3 noites</p>
-              </header>
-              <p class="text-sm text-slate-600 dark:text-slate-300">
-                Roteiro focado em museus, centros históricos e experiências gastronómicas locais.
-              </p>
-              <dl class="text-xs text-slate-500 space-y-1">
-                <div class="flex justify-between gap-2">
-                  <dt class="font-medium">Público-alvo</dt>
-                  <dd>Viajantes interessados em cultura e história</dd>
-                </div>
-                <div class="flex justify-between gap-2">
-                  <dt class="font-medium">Época recomendada</dt>
-                  <dd>Outono e Primavera</dd>
-                </div>
-              </dl>
-              <ul class="mt-2 text-xs list-disc list-inside space-y-1 text-slate-600 dark:text-slate-300">
-                <li>Dia 1: Chegada, passeio pelo centro histórico</li>
-                <li>Dia 2: Visita a museus principais e miradouros</li>
-                <li>Dia 3: Experiência gastronómica e bairro típico</li>
-              </ul>
-            </article>
-
-            <!-- Template de roteiro 2 -->
-            <article
-              class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 flex flex-col gap-3 dark:bg-slate-900 dark:border-slate-800"
-            >
-              <header>
-                <h3 class="text-base font-semibold">Roteiro Sol &amp; Praia</h3>
-                <p class="text-xs text-slate-500 mt-1">Duração sugerida: 7 dias / 6 noites</p>
-              </header>
-              <p class="text-sm text-slate-600 dark:text-slate-300">
-                Proposta para destinos de praia com foco em descanso, atividades leves e pôr-do-sol.
-              </p>
-              <dl class="text-xs text-slate-500 space-y-1">
-                <div class="flex justify-between gap-2">
-                  <dt class="font-medium">Público-alvo</dt>
-                  <dd>Casais e grupos que procuram relaxar</dd>
-                </div>
-                <div class="flex justify-between gap-2">
-                  <dt class="font-medium">Época recomendada</dt>
-                  <dd>Verão</dd>
-                </div>
-              </dl>
-              <ul class="mt-2 text-xs list-disc list-inside space-y-1 text-slate-600 dark:text-slate-300">
-                <li>Dia 1–2: Praia e reconhecimento da área</li>
-                <li>Dia 3–4: Atividades opcionais (barco, snorkelling)</li>
-                <li>Dia 5–7: Tempo livre e experiências gastronómicas</li>
-              </ul>
-            </article>
-
-            <!-- Template de roteiro 3 -->
-            <article
-              class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 flex flex-col gap-3 dark:bg-slate-900 dark:border-slate-800"
-            >
-              <header>
-                <h3 class="text-base font-semibold">Roteiro Natureza &amp; Aventura</h3>
-                <p class="text-xs text-slate-500 mt-1">Duração sugerida: 5 dias / 4 noites</p>
-              </header>
-              <p class="text-sm text-slate-600 dark:text-slate-300">
-                Ideal para quem gosta de trilhos, paisagens naturais e atividades ao ar livre.
-              </p>
-              <dl class="text-xs text-slate-500 space-y-1">
-                <div class="flex justify-between gap-2">
-                  <dt class="font-medium">Público-alvo</dt>
-                  <dd>Aventureiros e amantes de natureza</dd>
-                </div>
-                <div class="flex justify-between gap-2">
-                  <dt class="font-medium">Época recomendada</dt>
-                  <dd>Primavera e início de Verão</dd>
-                </div>
-              </dl>
-              <ul class="mt-2 text-xs list-disc list-inside space-y-1 text-slate-600 dark:text-slate-300">
-                <li>Dia 1: Chegada e passeio leve</li>
-                <li>Dia 2–3: Trilhos e atividades de aventura</li>
-                <li>Dia 4–5: Momentos de descanso e vistas panorâmicas</li>
-              </ul>
-            </article>
-          </div>
-        </section>
       </main>
 
       <!-- Toasts -->
@@ -874,11 +856,11 @@
         class="fixed inset-x-0 top-4 flex flex-col items-center space-y-2 z-50 pointer-events-none"
       ></div>
 
-      <!-- Footer simples -->
+      <!-- Simple footer -->
       <footer
         class="mt-8 border-t border-slate-200 py-4 text-center text-xs text-slate-500 dark:border-slate-800"
       >
-        The Unknown &mdash; Demo de Perfil de Viagem com Tailwind, Local Storage e JavaScript.
+        The Unknown &mdash; Travel profile demo with Tailwind, Local Storage and JavaScript.
       </footer>
     </div>
 

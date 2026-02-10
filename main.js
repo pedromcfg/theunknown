@@ -1,4 +1,4 @@
-// ----- Estado base do perfil -----
+// ----- Base profile state -----
 const initialState = {
   passaporte: null,
   visto: null,
@@ -11,10 +11,18 @@ const initialState = {
   bagagem: null,
   dataInicio: '',
   dataFim: '',
-  theme: 'light'
+  theme: 'light',
+  viagemMisterio: {
+    aeroporto: 'Aeroporto Francisco Sá Carneiro (Porto)',
+    dataHora: '',
+    portaEmbarque: '',
+    portaAviao: '',
+    fila: '',
+    lugar: ''
+  }
 };
 
-// ----- Chaves de Local Storage -----
+// ----- Local Storage keys -----
 const PROFILE_KEY_BASE = 'theUnknownPerfilViagem';
 const USERS_KEY = 'theUnknownUsers';
 const ACTIVE_USER_KEY = 'theUnknownActiveUser';
@@ -27,35 +35,35 @@ function getProfileStorageKey() {
   return `${PROFILE_KEY_BASE}_${user}`;
 }
 
-// Utilitário: guardar no localStorage
+// Utility: save to localStorage
 function saveToStorage() {
   try {
     const data = JSON.stringify(state);
     localStorage.setItem(getProfileStorageKey(), data);
   } catch (err) {
-    console.error('Erro ao guardar no Local Storage', err);
+    console.error('Error saving to Local Storage', err);
   }
 }
 
-// Utilitário: carregar do localStorage
+// Utility: load from localStorage
 function loadFromStorage() {
   try {
     const data = localStorage.getItem(getProfileStorageKey());
     if (!data) return null;
     return JSON.parse(data);
   } catch (err) {
-    console.error('Erro ao carregar do Local Storage', err);
+    console.error('Error loading from Local Storage', err);
     return null;
   }
 }
 
-// Utilitários: utilizadores / autenticação
+// User / auth helpers
 function loadUsers() {
   try {
     const raw = localStorage.getItem(USERS_KEY);
     return raw ? JSON.parse(raw) : {};
   } catch (e) {
-    console.error('Erro ao ler utilizadores', e);
+    console.error('Error reading users', e);
     return {};
   }
 }
@@ -64,7 +72,7 @@ function saveUsers(users) {
   try {
     localStorage.setItem(USERS_KEY, JSON.stringify(users));
   } catch (e) {
-    console.error('Erro ao guardar utilizadores', e);
+    console.error('Error saving users', e);
   }
 }
 
@@ -77,7 +85,7 @@ function setActiveUser(username) {
   }
 }
 
-// Toast simples
+// Simple toast
 function showToast(message, type = 'success') {
   const container = document.getElementById('toastContainer');
   if (!container) return;
@@ -103,7 +111,7 @@ function showToast(message, type = 'success') {
   }, 2800);
 }
 
-// Animação básica via CSS inline (Tailwind não tem keyframe custom aqui)
+// Small animation helper via inline CSS
 const styleAnim = document.createElement('style');
 styleAnim.textContent = `
 .animate-fade-in-up {
@@ -120,7 +128,7 @@ styleAnim.textContent = `
 `;
 document.head.appendChild(styleAnim);
 
-// Actualizar resumo lateral
+// Update side summary
 function updateResumo() {
   const resumoPassaporte = document.getElementById('resumoPassaporte');
   const resumoVisto = document.getElementById('resumoVisto');
@@ -133,25 +141,25 @@ function updateResumo() {
 
   let respostas = 0;
 
-  // Passaporte
+  // Passport
   if (state.passaporte) {
-    resumoPassaporte.textContent = state.passaporte === 'sim' ? 'Tem passaporte' : 'Sem passaporte';
+    resumoPassaporte.textContent = state.passaporte === 'sim' ? 'Has passport' : 'No passport';
     respostas++;
   } else {
     resumoPassaporte.textContent = '—';
   }
 
-  // Visto
+  // Visa
   if (state.passaporte === 'sim') {
     if (state.visto) {
       if (state.visto === 'sim') {
-        resumoVisto.textContent = 'Tem visto';
+        resumoVisto.textContent = 'Has visa';
       } else if (state.dispostoVisto === 'sim') {
-        resumoVisto.textContent = 'Não tem visto, mas está disposto a tirar';
+        resumoVisto.textContent = 'No visa, but willing to obtain one';
       } else if (state.dispostoVisto === 'nao') {
-        resumoVisto.textContent = 'Não tem visto e não está disposto a tirar';
+        resumoVisto.textContent = 'No visa and not willing to obtain one';
       } else {
-        resumoVisto.textContent = 'Não tem visto';
+        resumoVisto.textContent = 'No visa';
       }
       respostas++;
     } else {
@@ -161,24 +169,24 @@ function updateResumo() {
     resumoVisto.textContent = '—';
   }
 
-  // Clima
+  // Climate
   if (state.clima) {
-    const mapaClima = { quente: 'Quente', temperado: 'Temperado', frio: 'Frio' };
+    const mapaClima = { quente: 'Warm', temperado: 'Mild', frio: 'Cold' };
     resumoClima.textContent = mapaClima[state.clima] || state.clima;
     respostas++;
   } else {
     resumoClima.textContent = '—';
   }
 
-  // Tipo de viagem
+  // Trip type
   if (state.tiposViagem.length) {
     const labelMap = {
       cultural: 'Cultural',
-      solPraia: 'Sol e Praia',
-      natureza: 'Natureza',
-      religioso: 'Religioso',
-      gastronomico: 'Gastronómico',
-      aventura: 'Aventura'
+      solPraia: 'Sun & beach',
+      natureza: 'Nature',
+      religioso: 'Religious',
+      gastronomico: 'Gastronomic',
+      aventura: 'Adventure'
     };
     const labels = state.tiposViagem.map((t) => labelMap[t] || t);
     resumoTipoViagem.textContent = labels.join(', ');
@@ -187,7 +195,7 @@ function updateResumo() {
     resumoTipoViagem.textContent = '—';
   }
 
-  // Datas
+  // Dates
   if (state.dataInicio || state.dataFim) {
     const inicio = state.dataInicio ? new Date(state.dataInicio).toLocaleDateString('pt-PT') : '?';
     const fim = state.dataFim ? new Date(state.dataFim).toLocaleDateString('pt-PT') : '?';
@@ -197,12 +205,12 @@ function updateResumo() {
     resumoDatas.textContent = '—';
   }
 
-  // Bagagem
+  // Luggage
   if (state.bagagem) {
     const bagMap = {
-      mao10: 'Mala de mão 10kg',
-      porao20: 'Mala porão 20kg +€',
-      porao50: 'Mala porão 50kg +€'
+      mao10: 'Cabin bag 10kg',
+      porao20: 'Hold luggage 20kg +€',
+      porao50: 'Hold luggage 50kg +€'
     };
     resumoBagagem.textContent = bagMap[state.bagagem] || state.bagagem;
     respostas++;
@@ -210,12 +218,12 @@ function updateResumo() {
     resumoBagagem.textContent = '—';
   }
 
-  // Países já visitados
+  // Visited countries
   if (state.been.length) {
     resumoPaisesVisitados.textContent = state.been.join(', ');
     respostas++;
   } else {
-    resumoPaisesVisitados.textContent = 'Nenhum selecionado';
+    resumoPaisesVisitados.textContent = 'None selected';
   }
 
   // Story
@@ -223,15 +231,15 @@ function updateResumo() {
     respostas++;
   }
 
-  answersCount.textContent = `${respostas} resposta${respostas === 1 ? '' : 's'}`;
+  answersCount.textContent = `${respostas} answer${respostas === 1 ? '' : 's'}`;
 }
 
-// Progresso simples baseado em campos obrigatórios
+// Simple progress based on required fields
 function updateProgress() {
   const progressBar = document.getElementById('progressBar');
   const progressLabel = document.getElementById('progressLabel');
 
-  // Campos considerados para progresso
+  // Fields considered for progress
   const checks = [
     !!state.passaporte,
     state.passaporte === 'sim' ? !!state.visto : true,
@@ -254,7 +262,7 @@ function updateProgress() {
   updateScore(percent);
 }
 
-// Score de compatibilidade (bastante simples)
+// Compatibility score (simple heuristic)
 function updateScore(progressPercent) {
   const scoreBadge = document.getElementById('scoreBadge');
   const recomendacoesLista = document.getElementById('recomendacoesLista');
@@ -262,10 +270,10 @@ function updateScore(progressPercent) {
 
   let baseScore = progressPercent;
 
-  // Bónus por variedade de tipos de viagem
+  // Bonus for variety of trip types
   baseScore += Math.min(state.tiposViagem.length * 4, 16);
 
-  // Bónus por países já visitados
+  // Bonus for visited countries
   baseScore += Math.min(state.been.length * 3, 15);
 
   if (state.visto === 'sim' || state.dispostoVisto === 'sim') {
@@ -276,12 +284,12 @@ function updateScore(progressPercent) {
 
   scoreBadge.textContent = `Score: ${score}%`;
 
-  // Recomendações simples
+  // Simple recommendations
   recomendacoesLista.innerHTML = '';
   if (progressPercent < 30) {
     const p = document.createElement('p');
     p.className = 'text-slate-500 text-sm';
-    p.textContent = 'Complete pelo menos 30% do perfil para ver recomendações.';
+    p.textContent = 'Complete at least 30% of your profile to see recommendations.';
     recomendacoesLista.appendChild(p);
     return;
   }
@@ -290,7 +298,7 @@ function updateScore(progressPercent) {
   if (!recomendados.length) {
     const p = document.createElement('p');
     p.className = 'text-slate-500 text-sm';
-    p.textContent = 'Ainda não conseguimos encontrar destinos ideais com base no seu perfil.';
+    p.textContent = 'We could not yet find ideal destinations based on your profile.';
     recomendacoesLista.appendChild(p);
     return;
   }
@@ -311,7 +319,7 @@ function updateScore(progressPercent) {
   });
 }
 
-// Base de destinos simples
+// Simple destination base
 const DESTINOS = [
   {
     id: 'lisboa',
@@ -321,7 +329,7 @@ const DESTINOS = [
     clima: 'temperado',
     tipos: ['cultural', 'gastronomico'],
     precisaVisto: 'naoPrecisa',
-    descricao: 'Ideal para quem aprecia cultura, gastronomia e clima ameno.'
+    descricao: 'Ideal for travellers who enjoy culture, gastronomy and mild weather.'
   },
   {
     id: 'rio',
@@ -331,7 +339,7 @@ const DESTINOS = [
     clima: 'quente',
     tipos: ['solPraia', 'aventura', 'natureza'],
     precisaVisto: 'necessita',
-    descricao: 'Sol, praia e paisagens naturais impressionantes.'
+    descricao: 'Sun, beach and impressive natural landscapes.'
   },
   {
     id: 'tokyo',
@@ -341,7 +349,7 @@ const DESTINOS = [
     clima: 'temperado',
     tipos: ['cultural', 'gastronomico'],
     precisaVisto: 'necessita',
-    descricao: 'Cultura vibrante, gastronomia única e tecnologia de ponta.'
+    descricao: 'Vibrant culture, unique gastronomy and cutting-edge technology.'
   },
   {
     id: 'paris',
@@ -351,7 +359,7 @@ const DESTINOS = [
     clima: 'temperado',
     tipos: ['cultural', 'gastronomico'],
     precisaVisto: 'naoPrecisa',
-    descricao: 'Destino clássico para cultura, arte e gastronomia.'
+    descricao: 'Classic destination for culture, art and gastronomy.'
   },
   {
     id: 'cairo',
@@ -361,7 +369,7 @@ const DESTINOS = [
     clima: 'quente',
     tipos: ['cultural', 'religioso', 'aventura'],
     precisaVisto: 'necessita',
-    descricao: 'História milenar, cultura e experiências únicas no deserto.'
+    descricao: 'Ancient history, culture and unique desert experiences.'
   }
 ];
 
@@ -385,7 +393,7 @@ function getRecommendedDestinations() {
   });
 }
 
-// Países para a página "Países"
+// Countries used across the app
 const COUNTRIES_DATA = [
   {
     id: 'pt',
@@ -438,7 +446,7 @@ const COUNTRIES_DATA = [
   }
 ];
 
-// Preencher tabela de países visitados (lista / Been)
+// Fill visited countries table (Been)
 function renderVisitadosTabela() {
   const tbody = document.getElementById('visitadosTabelaBody');
   if (!tbody) return;
@@ -531,7 +539,7 @@ function renderCountriesGrid() {
           status === 'Liberado'
             ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-200'
             : 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-200'
-        }">${status === 'Liberado' ? 'Livre' : 'Com restrições'}</span>
+        }">${status === 'Liberado' ? 'Available' : 'Unavailable'}</span>
       </div>
       <div>
         <h3 class="text-sm font-semibold leading-tight">${c.nome}</h3>
@@ -552,7 +560,7 @@ function renderCountriesGrid() {
   });
 }
 
-// Mapa estilizado do mundo com países visitados
+// Stylised world map with visited countries
 function renderWorldMap() {
   const mapContainer = document.getElementById('worldMap');
   if (!mapContainer) return;
@@ -589,11 +597,11 @@ function renderWorldMap() {
   legend.innerHTML = `
     <span class="inline-flex items-center gap-1.5 text-[0.7rem]">
       <span class="inline-block h-3 w-3 rounded-full bg-emerald-500 border border-emerald-600"></span>
-      Visitado
+      Visited
     </span>
     <span class="inline-flex items-center gap-1.5 text-[0.7rem]">
       <span class="inline-block h-3 w-3 rounded-full bg-slate-300 border border-slate-400"></span>
-      Ainda não visitado
+      Not yet visited
     </span>
   `;
 
@@ -602,7 +610,7 @@ function renderWorldMap() {
   mapContainer.appendChild(wrapper);
 }
 
-// Lista de países acessíveis no painel lateral
+// List of accessible countries in the side panel
 function updatePaisesAcessiveis() {
   const lista = document.getElementById('paisesAcessiveisLista');
   if (!lista) return;
@@ -612,7 +620,7 @@ function updatePaisesAcessiveis() {
   if (state.passaporte !== 'sim') {
     const li = document.createElement('li');
     li.className = 'text-slate-500 text-sm';
-    li.textContent = 'Indique se tem passaporte para ver os países acessíveis.';
+    li.textContent = 'Indicate whether you have a passport to see accessible countries.';
     lista.appendChild(li);
     return;
   }
@@ -623,7 +631,7 @@ function updatePaisesAcessiveis() {
     const li = document.createElement('li');
     li.className = 'text-slate-500 text-sm';
     li.textContent =
-      'De momento não há países liberados com base nas informações de visto fornecidas.';
+      'At the moment there are no available countries based on the visa information provided.';
     lista.appendChild(li);
     return;
   }
@@ -632,18 +640,17 @@ function updatePaisesAcessiveis() {
     const li = document.createElement('li');
     li.className =
       'flex items-center justify-between text-sm rounded-lg bg-slate-50 px-2 py-1 dark:bg-slate-900';
-    li.innerHTML = `<span>${c.flagEmoji} ${c.nome}</span><span class="text-[0.7rem] text-emerald-600 dark:text-emerald-300">Livre</span>`;
+    li.innerHTML = `<span>${c.flagEmoji} ${c.nome}</span><span class="text-[0.7rem] text-emerald-600 dark:text-emerald-300">Available</span>`;
     lista.appendChild(li);
   });
 }
 
-// Navegação simples entre secções
+// Simple navigation between sections
 function setupNavigation() {
   const navButtons = document.querySelectorAll('.nav-link');
   const homeSection = document.getElementById('homeSection');
   const paisesSection = document.getElementById('paisesSection');
   const visitadosSection = document.getElementById('visitadosSection');
-  const roteirosSection = document.getElementById('roteirosSection');
 
   navButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -658,7 +665,6 @@ function setupNavigation() {
       homeSection.classList.add('hidden');
       paisesSection.classList.add('hidden');
       if (visitadosSection) visitadosSection.classList.add('hidden');
-      if (roteirosSection) roteirosSection.classList.add('hidden');
 
       if (target === 'paises') {
         paisesSection.classList.remove('hidden');
@@ -669,8 +675,6 @@ function setupNavigation() {
           renderVisitadosTabela();
           renderWorldMap();
         }
-      } else if (target === 'roteiros') {
-        if (roteirosSection) roteirosSection.classList.remove('hidden');
       } else {
         // 'home' / perfil
         homeSection.classList.remove('hidden');
@@ -680,7 +684,7 @@ function setupNavigation() {
   });
 }
 
-// Tema (dark / light)
+// Theme (dark / light)
 function applyTheme(theme) {
   const root = document.documentElement;
   const label = document.getElementById('themeLabel');
@@ -688,13 +692,13 @@ function applyTheme(theme) {
   if (theme === 'dark') {
     root.classList.add('dark');
     if (label) {
-      label.textContent = 'Escuro';
+      label.textContent = 'Dark';
       label.nextSibling && (label.nextSibling.textContent = '🌙');
     }
   } else {
     root.classList.remove('dark');
     if (label) {
-      label.textContent = 'Claro';
+      label.textContent = 'Light';
       label.nextSibling && (label.nextSibling.textContent = '🌞');
     }
   }
@@ -713,21 +717,21 @@ function setupThemeToggle() {
   });
 }
 
-// Exportar JSON
+// Export JSON
 function exportProfile() {
   const dataStr = JSON.stringify(state, null, 2);
   const blob = new Blob([dataStr], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'perfil-viagem.json';
+  a.download = 'travel-profile.json';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
 
-// Sincronizar UI com estado
+// Sync UI from state
 function syncUIFromState() {
   // Passaporte
   if (state.passaporte) {
@@ -816,6 +820,7 @@ function syncUIFromState() {
   renderCountriesGrid();
   renderVisitadosTabela();
   renderWorldMap();
+  renderViagemMisterio();
 }
 
 // Listeners
@@ -881,8 +886,7 @@ function setupListeners() {
     });
   }
 
-  // Número de pessoas
-  // quantidade de pessoas removida do questionário
+  // Number of people removed from questionnaire
 
   // Tipos de viagem
   document.querySelectorAll('input[name="tipoViagem"]').forEach((cb) => {
@@ -939,7 +943,24 @@ function setupListeners() {
     });
   }
 
-  // Botões principais
+  // Mystery trip
+  const dataHoraInput = document.getElementById('misterioDataHora');
+  const gerarMisterioBtn = document.getElementById('gerarMisterioBtn');
+  if (dataHoraInput) {
+    dataHoraInput.addEventListener('change', (e) => {
+      state.viagemMisterio.dataHora = e.target.value;
+      saveToStorage();
+      renderViagemMisterio();
+    });
+  }
+  if (gerarMisterioBtn) {
+    gerarMisterioBtn.addEventListener('click', () => {
+      gerarViagemMisterioAuto();
+      showToast('Mystery trip details updated.', 'info');
+    });
+  }
+
+  // Main buttons
   const saveProfileBtn = document.getElementById('saveProfileBtn');
   const loadProfileBtn = document.getElementById('loadProfileBtn');
   const clearProfileBtn = document.getElementById('clearProfileBtn');
@@ -948,7 +969,7 @@ function setupListeners() {
   if (saveProfileBtn) {
     saveProfileBtn.addEventListener('click', () => {
       saveToStorage();
-      showToast('Perfil guardado com sucesso!', 'success');
+      showToast('Profile saved successfully!', 'success');
     });
   }
 
@@ -958,9 +979,9 @@ function setupListeners() {
       if (stored) {
         state = { ...state, ...stored };
         syncUIFromState();
-        showToast('Perfil carregado!', 'info');
+        showToast('Profile loaded!', 'info');
       } else {
-        showToast('Nenhum perfil guardado encontrado.', 'error');
+        showToast('No saved profile found.', 'error');
       }
     });
   }
@@ -970,14 +991,14 @@ function setupListeners() {
       state = { ...initialState, theme: state.theme };
       localStorage.removeItem(getProfileStorageKey());
       syncUIFromState();
-      showToast('Perfil limpo.', 'info');
+      showToast('Profile cleared.', 'info');
     });
   }
 
   if (exportJsonBtn) {
     exportJsonBtn.addEventListener('click', () => {
       exportProfile();
-      showToast('Perfil exportado como JSON.', 'success');
+      showToast('Profile exported as JSON.', 'success');
     });
   }
 
@@ -1004,12 +1025,69 @@ function setupListeners() {
       if (userInfo) userInfo.classList.add('hidden');
       if (appShell) appShell.classList.add('hidden');
       if (authSection) authSection.classList.remove('hidden');
-      showToast('Sessão terminada.', 'info');
+      showToast('Session ended.', 'info');
     });
   }
 }
 
-// ----- Autenticação (login / registo) -----
+// Mystery trip: helpers
+function gerarViagemMisterioAuto() {
+  // Porta de embarque 1-40
+  const portaEmbarque = `G${Math.floor(Math.random() * 40) + 1}`;
+  // Porta do avião 1-5
+  const portaAviao = String(Math.floor(Math.random() * 5) + 1);
+  // Fila 1-30
+  const fila = String(Math.floor(Math.random() * 30) + 1);
+  // Lugar A-F
+  const letras = ['A', 'B', 'C', 'D', 'E', 'F'];
+  const lugar = letras[Math.floor(Math.random() * letras.length)];
+
+  // Data/hora sugerida: se não existir, próximo dia às 10h
+  let dataHora = state.viagemMisterio.dataHora;
+  if (!dataHora) {
+    const agora = new Date();
+    const amanha = new Date(agora.getTime() + 24 * 60 * 60 * 1000);
+    amanha.setHours(10, 0, 0, 0);
+    const pad = (n) => String(n).padStart(2, '0');
+    const localISO = `${amanha.getFullYear()}-${pad(amanha.getMonth() + 1)}-${pad(
+      amanha.getDate()
+    )}T${pad(amanha.getHours())}:${pad(amanha.getMinutes())}`;
+    dataHora = localISO;
+  }
+
+  state.viagemMisterio = {
+    ...state.viagemMisterio,
+    dataHora,
+    portaEmbarque,
+    portaAviao,
+    fila,
+    lugar
+  };
+  saveToStorage();
+  renderViagemMisterio();
+}
+
+function renderViagemMisterio() {
+  const aeroportoEl = document.getElementById('misterioAeroporto');
+  const dataHoraInput = document.getElementById('misterioDataHora');
+  const portaEmbarqueEl = document.getElementById('misterioPortaEmbarque');
+  const portaAviaoEl = document.getElementById('misterioPortaAviao');
+  const filaEl = document.getElementById('misterioFila');
+  const lugarEl = document.getElementById('misterioLugar');
+
+  if (!aeroportoEl || !dataHoraInput || !portaEmbarqueEl || !portaAviaoEl || !filaEl || !lugarEl) {
+    return;
+  }
+
+  aeroportoEl.textContent = state.viagemMisterio.aeroporto;
+  dataHoraInput.value = state.viagemMisterio.dataHora || '';
+  portaEmbarqueEl.textContent = state.viagemMisterio.portaEmbarque || '—';
+  portaAviaoEl.textContent = state.viagemMisterio.portaAviao || '—';
+  filaEl.textContent = state.viagemMisterio.fila || '—';
+  lugarEl.textContent = state.viagemMisterio.lugar || '—';
+}
+
+// ----- Authentication (login / register) -----
 function setupAuth() {
   const authSection = document.getElementById('authSection');
   const appShell = document.getElementById('appShell');
@@ -1044,15 +1122,15 @@ function setupAuth() {
       registerTab.classList.remove('bg-white', 'shadow-sm', 'text-brand');
       registerTab.classList.add('text-slate-500');
       passwordConfirmGroup.classList.add('hidden');
-      authTitle.textContent = 'Entrar em The Unknown';
-      authSubmitBtn.textContent = 'Entrar';
+      authTitle.textContent = 'Sign in to The Unknown';
+      authSubmitBtn.textContent = 'Sign in';
     } else {
       registerTab.classList.add('bg-white', 'shadow-sm', 'text-brand');
       loginTab.classList.remove('bg-white', 'shadow-sm', 'text-brand');
       loginTab.classList.add('text-slate-500');
       passwordConfirmGroup.classList.remove('hidden');
-      authTitle.textContent = 'Criar conta em The Unknown';
-      authSubmitBtn.textContent = 'Criar conta';
+      authTitle.textContent = 'Create an account in The Unknown';
+      authSubmitBtn.textContent = 'Sign up';
     }
   }
 
@@ -1072,7 +1150,7 @@ function setupAuth() {
     const password = passwordInput.value;
 
     if (!username || !password) {
-      showToast('Preencha utilizador e palavra-passe.', 'error');
+      showToast('Please fill in username and password.', 'error');
       return;
     }
 
@@ -1081,15 +1159,15 @@ function setupAuth() {
     if (mode === 'register') {
       const password2 = passwordConfirmInput.value;
       if (password.length < 4) {
-        showToast('A palavra-passe deve ter pelo menos 4 caracteres.', 'error');
+        showToast('Password must have at least 4 characters.', 'error');
         return;
       }
       if (password !== password2) {
-        showToast('As palavras-passe não coincidem.', 'error');
+        showToast('Passwords do not match.', 'error');
         return;
       }
       if (users[username]) {
-        showToast('Já existe um utilizador com esse nome.', 'error');
+        showToast('A user with that name already exists.', 'error');
         return;
       }
       users[username] = { password };
@@ -1104,11 +1182,11 @@ function setupAuth() {
       state = { ...initialState, theme: state.theme };
       saveToStorage();
       syncUIFromState();
-      showToast('Conta criada com sucesso. Bem-vindo!', 'success');
+      showToast('Account created successfully. Welcome!', 'success');
     } else {
       // login
       if (!users[username] || users[username].password !== password) {
-        showToast('Credenciais inválidas.', 'error');
+        showToast('Invalid credentials.', 'error');
         return;
       }
       setActiveUser(username);
@@ -1125,7 +1203,7 @@ function setupAuth() {
         state = { ...initialState, theme: state.theme };
       }
       syncUIFromState();
-      showToast('Sessão iniciada.', 'success');
+      showToast('Session started.', 'success');
     }
   });
 
@@ -1157,6 +1235,19 @@ document.addEventListener('DOMContentLoaded', () => {
   setupThemeToggle();
   setupListeners();
   syncUIFromState();
+
+  // Se houver utilizador ativo, fazer login automático
+  if (activeUser) {
+    const authSection = document.getElementById('authSection');
+    const appShell = document.getElementById('appShell');
+    const userInfo = document.getElementById('userInfo');
+    const userNameLabel = document.getElementById('userNameLabel');
+
+    if (authSection) authSection.classList.add('hidden');
+    if (appShell) appShell.classList.remove('hidden');
+    if (userInfo) userInfo.classList.remove('hidden');
+    if (userNameLabel) userNameLabel.textContent = activeUser;
+  }
 });
 
 

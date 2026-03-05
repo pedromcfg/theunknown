@@ -42,6 +42,119 @@
       html {
         scroll-behavior: smooth;
       }
+
+      .panel-card {
+        border-radius: 1rem;
+        border: 1px solid #cddcf3;
+        background: linear-gradient(180deg, #edf3ff 0%, #dfeafc 100%);
+        box-shadow: 0 12px 26px -20px rgba(18, 50, 93, 0.45);
+      }
+
+      .dark .panel-card {
+        border: 1px solid #1e3357;
+        background: linear-gradient(180deg, #0b1a33 0%, #0a1830 100%);
+        box-shadow: 0 12px 26px -18px rgba(2, 8, 23, 0.7);
+      }
+
+      .panel-title {
+        letter-spacing: -0.015em;
+        font-weight: 700;
+      }
+
+      .section-kicker {
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #64748b;
+        font-weight: 600;
+      }
+
+      .ticket-paper {
+        border: 2px dashed #d1d5db;
+        background: #ffffff;
+        color: #111827;
+        box-shadow: 0 10px 24px -18px rgba(15, 23, 42, 0.35);
+      }
+
+      .ticket-font {
+        font-family:
+          ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          Monaco,
+          Consolas,
+          'Liberation Mono',
+          'Courier New',
+          monospace;
+        letter-spacing: 0.01em;
+      }
+
+      .landing-pop {
+        animation: landingPop 0.45s ease-out;
+      }
+
+      @keyframes landingPop {
+        0% {
+          transform: scale(1);
+        }
+        45% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .reveal-banner {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+        pointer-events: none;
+      }
+
+      .reveal-banner.show {
+        animation: revealBannerIn 1.8s ease-out forwards;
+      }
+
+      @keyframes revealBannerIn {
+        0% {
+          opacity: 0;
+          transform: translateY(10px) scale(0.98);
+        }
+        15%,
+        70% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-4px) scale(1);
+        }
+      }
+
+      .mystery-modal {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .mystery-modal.show {
+        animation: mysteryModalInOut 1.6s ease-out forwards;
+      }
+
+      @keyframes mysteryModalInOut {
+        0% {
+          opacity: 0;
+          transform: scale(0.96);
+        }
+        15%,
+        72% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(1.01);
+        }
+      }
     </style>
   </head>
   <body
@@ -53,35 +166,38 @@
         class="border-b border-slate-200 bg-white/80 backdrop-blur-sm dark:bg-slate-900/80 dark:border-slate-800"
       >
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div class="flex items-center gap-3">
+          <button id="logoHomeBtn" class="flex items-center gap-3">
             <img
               src="logo.png"
               alt="The Unknown"
               class="h-10 w-10 rounded-xl object-cover shadow-sm"
             />
-            <div>
-              <h1 class="text-xl sm:text-2xl font-semibold tracking-tight">The Unknown</h1>
-            </div>
-          </div>
+          </button>
 
           <div class="flex items-center gap-4">
             <!-- Navigation -->
-            <nav class="hidden sm:flex items-center gap-4 text-sm font-medium">
+            <nav class="hidden sm:flex items-center gap-2 text-sm font-medium">
               <button
-                data-nav="home"
-                class="nav-link text-brand hover:text-brand-light px-2 py-1 rounded-full"
+                data-nav="landing"
+                class="nav-link text-amber-800 bg-amber-100 hover:bg-amber-200 px-3 py-1 rounded-full border border-amber-300 dark:text-amber-200 dark:bg-amber-900/40 dark:border-amber-700 dark:hover:bg-amber-900/60 shadow-sm"
+              >
+                Mystery Trip
+              </button>
+              <button
+                data-nav="profile"
+                class="nav-link text-slate-600 hover:text-brand-light px-3 py-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 Profile
               </button>
               <button
                 data-nav="paises"
-                class="nav-link text-slate-600 hover:text-brand-light px-2 py-1 rounded-full"
+                class="nav-link text-slate-600 hover:text-brand-light px-3 py-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 Countries
               </button>
               <button
                 data-nav="visitados"
-                class="nav-link text-slate-600 hover:text-brand-light px-2 py-1 rounded-full"
+                class="nav-link text-slate-600 hover:text-brand-light px-3 py-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 Visited countries
               </button>
@@ -207,9 +323,44 @@
 
       <main id="appShell" class="flex-1 hidden">
         <section
-          id="homeSection"
-          class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6"
+          id="landingSection"
+          class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-6"
         >
+          <div
+              class="rounded-3xl border border-brand/20 bg-gradient-to-br from-brand-softer to-white dark:from-slate-800 dark:to-slate-900 p-8 sm:p-12 shadow-md text-center"
+          >
+            <img
+              src="logo.png"
+              alt="The Unknown"
+              class="mx-auto h-20 w-20 sm:h-24 sm:w-24 rounded-2xl object-cover shadow-md mb-4"
+            />
+            <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-brand dark:text-slate-100">
+              The Unknown
+            </h2>
+            <p class="mt-2 text-sm sm:text-base text-slate-600 dark:text-slate-300">
+              Your destination stays secret until you land.
+            </p>
+            <button
+              id="heroGenerateBtn"
+              class="mt-6 inline-flex items-center justify-center rounded-full bg-amber-400 px-8 py-3 text-base font-semibold text-slate-900 shadow-lg shadow-amber-300/40 hover:bg-amber-500 transition"
+            >
+              Generate a Mystery Trip
+            </button>
+          </div>
+
+          <section
+            id="mysteryHubSection"
+            class="hidden rounded-3xl border border-brand/20 bg-gradient-to-br from-brand-softer to-white dark:from-slate-800 dark:to-slate-900 p-5 sm:p-6 shadow-sm"
+          >
+            <div id="mysteryHubContainer"></div>
+          </section>
+        </section>
+
+        <section
+          id="homeSection"
+          class="hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6"
+        >
+
           <!-- Progress + quick actions -->
           <div class="grid gap-4 sm:grid-cols-3 items-center">
             <div class="sm:col-span-2">
@@ -247,16 +398,17 @@
               aria-label="Travel Profile Form"
               class="space-y-6"
             >
-              <!-- Passaporte e Vistos -->
+              <!-- Passport -->
               <div
-                class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
+                class="panel-card p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
               >
-                <h2 class="text-base sm:text-lg font-semibold mb-3 flex items-center gap-2">
+                <p class="section-kicker mb-2">Profile basics</p>
+                <h2 class="panel-title text-lg sm:text-xl mb-3 flex items-center gap-2">
                   <span
                     class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-softer text-brand text-sm font-semibold"
                     >1</span
                   >
-                  Passport &amp; Visas
+                  Passport
                 </h2>
 
                 <div class="space-y-4 text-sm">
@@ -284,147 +436,161 @@
                     </div>
                   </div>
 
-                  <div id="vistosGroup" class="space-y-4 hidden">
-                    <div>
-                      <p class="font-medium mb-2">Do you have a visa?</p>
-                      <div class="flex flex-wrap gap-3">
-                        <label class="inline-flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="visto"
-                            value="sim"
-                            class="text-brand focus:ring-brand"
-                          />
-                          <span>Yes</span>
-                        </label>
-                        <label class="inline-flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="visto"
-                            value="nao"
-                            class="text-brand focus:ring-brand"
-                          />
-                          <span>No</span>
-                        </label>
-                      </div>
+                  <div class="grid gap-3 sm:grid-cols-2">
+                    <div class="sm:col-span-2">
+                      <label class="block font-medium mb-2" for="departureAirport">
+                        Departure airport
+                      </label>
+                      <select
+                        id="departureAirport"
+                        class="mt-1 block w-full rounded-xl border-slate-200 bg-white py-2 px-3 text-sm shadow-sm focus:border-brand focus:ring-brand dark:bg-slate-900 dark:border-slate-700"
+                      >
+                        <option value="Aeroporto Francisco Sá Carneiro (Porto)">
+                          Aeroporto Francisco Sá Carneiro (Porto)
+                        </option>
+                        <option value="Aeroporto Humberto Delgado (Lisboa)">
+                          Aeroporto Humberto Delgado (Lisboa)
+                        </option>
+                        <option value="Aeroporto de Faro">
+                          Aeroporto de Faro
+                        </option>
+                      </select>
                     </div>
+                  </div>
 
-                    <div id="vistoDispostoGroup" class="hidden">
-                      <p class="font-medium mb-2">Would you be willing to obtain a visa?</p>
-                      <div class="flex flex-wrap gap-3">
-                        <label class="inline-flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="dispostoVisto"
-                            value="sim"
-                            class="text-brand focus:ring-brand"
-                          />
-                          <span>Yes</span>
-                        </label>
-                        <label class="inline-flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="dispostoVisto"
-                            value="nao"
-                            class="text-brand focus:ring-brand"
-                          />
-                          <span>No</span>
-                        </label>
-                      </div>
+                  <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label class="block font-medium mb-2" for="availabilityStart">
+                        Availability start date
+                      </label>
+                      <input
+                        type="date"
+                        id="availabilityStart"
+                        class="mt-1 block w-full rounded-xl border-slate-200 bg-white py-2 px-3 text-sm shadow-sm focus:border-brand focus:ring-brand dark:bg-slate-900 dark:border-slate-700"
+                      />
                     </div>
+                    <div>
+                      <label class="block font-medium mb-2" for="availabilityEnd">
+                        Availability end date
+                      </label>
+                      <input
+                        type="date"
+                        id="availabilityEnd"
+                        class="mt-1 block w-full rounded-xl border-slate-200 bg-white py-2 px-3 text-sm shadow-sm focus:border-brand focus:ring-brand dark:bg-slate-900 dark:border-slate-700"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="rounded-xl border border-slate-200 bg-white/70 px-4 py-3 dark:border-slate-700 dark:bg-slate-900/50">
+                    <div class="flex items-center justify-between gap-3 mb-2">
+                      <label class="block font-medium" for="stayDaysRange">Length of stay</label>
+                      <span id="stayDaysValue" class="text-sm font-semibold text-brand">1 day</span>
+                    </div>
+                    <input
+                      type="range"
+                      id="stayDaysRange"
+                      min="1"
+                      max="5"
+                      step="1"
+                      value="1"
+                      class="w-full accent-brand"
+                    />
+                    <p id="stayDaysHint" class="mt-2 text-xs text-slate-500">
+                      Choose between 1 and 5 days. The maximum updates automatically to your availability.
+                    </p>
                   </div>
                 </div>
               </div>
 
-              <!-- Questionário de Preferências -->
+              <!-- Tourism preferences -->
               <div
-                class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
+                class="panel-card p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
               >
-                <h2 class="text-base sm:text-lg font-semibold mb-3 flex items-center gap-2">
+                <p class="section-kicker mb-2">Preference setup</p>
+                <h2 class="panel-title text-lg sm:text-xl mb-3 flex items-center gap-2">
                   <span
                     class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-softer text-brand text-sm font-semibold"
                     >2</span
                   >
-                  Preferences questionnaire
+                  Tourism preferences
                 </h2>
 
                 <div class="space-y-6 text-sm">
-                  <!-- Tipo de viagem -->
                   <div>
-                    <p class="font-medium mb-2">Type of trip (you can choose more than one)</p>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs sm:text-sm">
+                    <p class="font-medium mb-2">Trip type</p>
+                    <div class="grid gap-2 sm:grid-cols-2">
                       <label
-                        class="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
+                        class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer dark:bg-slate-900 dark:border-slate-700"
                       >
                         <input
-                          type="checkbox"
+                          type="radio"
+                          name="tripType"
+                          value="religious"
                           class="text-brand focus:ring-brand"
-                          name="tipoViagem"
-                          value="cultural"
-                        />
-                        <span>Cultural</span>
-                      </label>
-                      <label
-                        class="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
-                      >
-                        <input
-                          type="checkbox"
-                          class="text-brand focus:ring-brand"
-                          name="tipoViagem"
-                          value="solPraia"
-                        />
-                        <span>Sun &amp; beach</span>
-                      </label>
-                      <label
-                        class="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
-                      >
-                        <input
-                          type="checkbox"
-                          class="text-brand focus:ring-brand"
-                          name="tipoViagem"
-                          value="natureza"
-                        />
-                        <span>Nature</span>
-                      </label>
-                      <label
-                        class="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
-                      >
-                        <input
-                          type="checkbox"
-                          class="text-brand focus:ring-brand"
-                          name="tipoViagem"
-                          value="religioso"
+                          checked
                         />
                         <span>Religious</span>
                       </label>
                       <label
-                        class="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
+                        class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer dark:bg-slate-900 dark:border-slate-700"
                       >
                         <input
-                          type="checkbox"
+                          type="radio"
+                          name="tripType"
+                          value="cultural"
                           class="text-brand focus:ring-brand"
-                          name="tipoViagem"
-                          value="gastronomico"
+                        />
+                        <span>Cultural</span>
+                      </label>
+                      <label
+                        class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer dark:bg-slate-900 dark:border-slate-700"
+                      >
+                        <input
+                          type="radio"
+                          name="tripType"
+                          value="sunBeach"
+                          class="text-brand focus:ring-brand"
+                        />
+                        <span>Sun and Beach</span>
+                      </label>
+                      <label
+                        class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer dark:bg-slate-900 dark:border-slate-700"
+                      >
+                        <input
+                          type="radio"
+                          name="tripType"
+                          value="nature"
+                          class="text-brand focus:ring-brand"
+                        />
+                        <span>Nature</span>
+                      </label>
+                      <label
+                        class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer dark:bg-slate-900 dark:border-slate-700"
+                      >
+                        <input
+                          type="radio"
+                          name="tripType"
+                          value="gastronomic"
+                          class="text-brand focus:ring-brand"
                         />
                         <span>Gastronomic</span>
                       </label>
                       <label
-                        class="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer hover:border-brand hover:bg-brand-softer dark:bg-slate-900 dark:border-slate-700"
+                        class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 cursor-pointer dark:bg-slate-900 dark:border-slate-700"
                       >
                         <input
-                          type="checkbox"
+                          type="radio"
+                          name="tripType"
+                          value="adventure"
                           class="text-brand focus:ring-brand"
-                          name="tipoViagem"
-                          value="aventura"
                         />
                         <span>Adventure</span>
                       </label>
                     </div>
                   </div>
 
-                  <!-- Clima preferido -->
                   <div>
-                    <p class="font-medium mb-2">Preferred climate</p>
+                    <p class="font-medium mb-2">Climate type (does not affect destination)</p>
                     <div class="grid grid-cols-3 gap-3 text-xs sm:text-sm" id="climaGroup">
                       <button
                         type="button"
@@ -450,9 +616,8 @@
                     </div>
                   </div>
 
-                  <!-- Tipo de bagagem -->
                   <div>
-                    <p class="font-medium mb-2">Type of luggage</p>
+                    <p class="font-medium mb-2">Luggage type (affects final cost)</p>
                     <div class="grid gap-3 sm:grid-cols-3 text-xs sm:text-sm" id="bagagemGroup">
                       <button
                         type="button"
@@ -480,50 +645,33 @@
                       </button>
                     </div>
                   </div>
-
-                  <!-- Datas disponíveis -->
-                  <div class="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <label class="block font-medium mb-2" for="dataInicio">
-                        Start date
-                      </label>
-                      <input
-                        type="date"
-                        id="dataInicio"
-                        class="mt-1 block w-full rounded-xl border-slate-200 bg-white py-2 px-3 text-sm shadow-sm focus:border-brand focus:ring-brand dark:bg-slate-900 dark:border-slate-700"
-                      />
-                    </div>
-                    <div>
-                      <label class="block font-medium mb-2" for="dataFim">
-                        End date
-                      </label>
-                      <input
-                        type="date"
-                        id="dataFim"
-                        class="mt-1 block w-full rounded-xl border-slate-200 bg-white py-2 px-3 text-sm shadow-sm focus:border-brand focus:ring-brand dark:bg-slate-900 dark:border-slate-700"
-                      />
-                    </div>
-                  </div>
                 </div>
               </div>
 
-              <!-- Mystery trip -->
+              <!-- Mystery trip core -->
               <div
-                class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
+                id="mysteryCard"
+                class="panel-card p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
               >
-                <h2 class="text-base sm:text-lg font-semibold mb-3 flex items-center gap-2">
-                  <span
-                    class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-softer text-brand text-sm font-semibold"
-                    >3</span
-                  >
-                  Mystery trip
+                <p class="section-kicker mb-2">Trip generation</p>
+                <h2 class="panel-title text-lg sm:text-xl mb-3 flex items-center gap-2">
+                  Mystery trip setup
                 </h2>
                 <p class="text-xs sm:text-sm text-slate-500 mb-4">
-                  In this experience, the final destination is a secret until you arrive at the
-                  airport. Here you can only see the logistical details of your trip.
+                  Destination is always hidden and only revealed after you press the landing button.
                 </p>
 
-                <div class="space-y-4 text-sm">
+                <div class="space-y-6 text-sm">
+                  <div class="flex flex-wrap gap-2 items-center justify-between">
+                    <button
+                      type="button"
+                      id="landedBtn"
+                      class="inline-flex items-center justify-center rounded-full border border-amber-500 bg-amber-400 px-5 py-2.5 text-xs sm:text-sm font-extrabold text-amber-950 shadow-lg shadow-amber-500/30 hover:bg-amber-300 hover:scale-[1.02] transition dark:border-amber-400 dark:bg-amber-300 dark:text-amber-950 dark:hover:bg-amber-200"
+                    >
+                      <span class="mr-1" aria-hidden="true">🛬</span>I landed
+                    </button>
+                  </div>
+
                   <div>
                     <p class="font-medium mb-1">Departure airport</p>
                     <p id="misterioAeroporto" class="text-slate-700 dark:text-slate-200">
@@ -531,66 +679,189 @@
                     </p>
                   </div>
 
-                  <div class="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <label class="block font-medium mb-1" for="misterioDataHora">
-                        Flight date &amp; time
-                      </label>
-                      <input
-                        type="datetime-local"
-                        id="misterioDataHora"
-                        class="mt-1 block w-full rounded-xl border-slate-200 bg-white py-2 px-3 text-sm shadow-sm focus:border-brand focus:ring-brand dark:bg-slate-900 dark:border-slate-700"
-                      />
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <p class="font-medium mb-1">Destination</p>
+                    <p
+                      id="misterioDestino"
+                      class="inline-flex items-center rounded-full border border-amber-300 bg-amber-100 px-4 py-1.5 text-base sm:text-lg font-extrabold tracking-wide text-amber-900 shadow-sm"
+                    >
+                      Hidden until landing
+                    </p>
+                  </div>
+                  <div class="ticket-paper ticket-font relative rounded-2xl p-4 sm:p-5 shadow-inner">
+                    <div class="absolute -left-2 top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-white border border-slate-300"></div>
+                    <div class="absolute -right-2 top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-white border border-slate-300"></div>
+
+                    <p class="text-xs uppercase tracking-wider text-slate-500 mb-3 font-semibold">
+                      Boarding pass
+                    </p>
+                    <div class="grid gap-4 sm:grid-cols-3">
+                      <div class="sm:col-span-2">
+                        <label class="block font-medium mb-1" for="misterioDataHora">
+                          Flight date &amp; time
+                        </label>
+                        <input
+                          type="text"
+                          id="misterioDataHora"
+                          readonly
+                          class="mt-1 block w-full rounded-xl border-slate-300 bg-white py-2 px-3 text-sm shadow-sm text-slate-900"
+                        />
+                      </div>
                       <div>
                         <p class="font-medium mb-1">Gate</p>
                         <p
                           id="misterioPortaEmbarque"
-                          class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-100"
+                          class="inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-900"
+                        >
+                          —
+                        </p>
+                      </div>
+                    </div>
+                    <div class="grid gap-3 grid-cols-2 sm:grid-cols-4 mt-4 pt-4 border-t border-slate-300">
+                      <div>
+                        <p class="font-medium mb-1">Aircraft door</p>
+                        <p
+                          id="misterioPortaAviao"
+                          class="inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-900"
                         >
                           —
                         </p>
                       </div>
                       <div>
-                        <p class="font-medium mb-1">Aircraft door</p>
+                        <p class="font-medium mb-1">Row</p>
                         <p
-                          id="misterioPortaAviao"
-                          class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-100"
+                          id="misterioFila"
+                          class="inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-900"
                         >
                           —
+                        </p>
+                      </div>
+                      <div>
+                        <p class="font-medium mb-1">Seat</p>
+                        <p
+                          id="misterioLugar"
+                          class="inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-900"
+                        >
+                          —
+                        </p>
+                      </div>
+                      <div>
+                        <p class="font-medium mb-1">Flight status</p>
+                        <p
+                          id="flightStatusLabel"
+                          class="inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-900"
+                        >
+                          Not landed
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <div class="grid gap-4 sm:grid-cols-3 items-center">
-                    <div>
-                      <p class="font-medium mb-1">Row</p>
-                      <p
-                        id="misterioFila"
-                        class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-100"
-                      >
-                        —
-                      </p>
+                  <div class="ticket-paper ticket-font relative rounded-2xl p-4 sm:p-5 shadow-inner">
+                    <div class="absolute -left-2 top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-white border border-slate-300"></div>
+                    <div class="absolute -right-2 top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-white border border-slate-300"></div>
+                    <p class="text-xs uppercase tracking-wider text-slate-500 mb-3 font-semibold">
+                      Return ticket
+                    </p>
+                    <div class="grid gap-4 sm:grid-cols-3">
+                      <div class="sm:col-span-2">
+                        <label class="block font-medium mb-1" for="misterioReturnDataHora">
+                          Return flight date &amp; time
+                        </label>
+                        <input
+                          type="text"
+                          id="misterioReturnDataHora"
+                          readonly
+                          class="mt-1 block w-full rounded-xl border-slate-300 bg-white py-2 px-3 text-sm shadow-sm text-slate-900"
+                        />
+                      </div>
+                      <div>
+                        <p class="font-medium mb-1">Return gate</p>
+                        <p
+                          id="misterioReturnPortaEmbarque"
+                          class="inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-900"
+                        >
+                          —
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p class="font-medium mb-1">Seat</p>
-                      <p
-                        id="misterioLugar"
-                        class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-100"
-                      >
-                        —
-                      </p>
+                    <div class="grid gap-3 grid-cols-2 sm:grid-cols-4 mt-4 pt-4 border-t border-slate-300">
+                      <div>
+                        <p class="font-medium mb-1">Return aircraft door</p>
+                        <p
+                          id="misterioReturnPortaAviao"
+                          class="inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-900"
+                        >
+                          —
+                        </p>
+                      </div>
+                      <div>
+                        <p class="font-medium mb-1">Return row</p>
+                        <p
+                          id="misterioReturnFila"
+                          class="inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-900"
+                        >
+                          —
+                        </p>
+                      </div>
+                      <div>
+                        <p class="font-medium mb-1">Return seat</p>
+                        <p
+                          id="misterioReturnLugar"
+                          class="inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-900"
+                        >
+                          —
+                        </p>
+                      </div>
+                      <div>
+                        <p class="font-medium mb-1">Return flight status</p>
+                        <p
+                          id="returnFlightStatusLabel"
+                          class="inline-flex items-center rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-900"
+                        >
+                          Planned
+                        </p>
+                      </div>
                     </div>
-                    <div class="flex sm:justify-end mt-2 sm:mt-0">
-                      <button
-                        type="button"
-                        id="gerarMisterioBtn"
-                        class="inline-flex items-center justify-center rounded-full border border-brand bg-white px-4 py-2 text-xs sm:text-sm font-semibold text-brand shadow-sm hover:bg-brand-softer dark:bg-slate-900 dark:text-brand dark:border-brand"
-                      >
-                        Generate mystery trip
-                      </button>
+                  </div>
+
+                  <div class="rounded-xl border border-slate-200 p-4 dark:border-slate-700 bg-white/70 dark:bg-slate-900/40">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                      <p class="font-semibold">Accommodation &amp; costs (preview)</p>
+                      <span class="text-[0.7rem] rounded-full bg-amber-100 px-2 py-0.5 font-semibold text-amber-800 dark:bg-amber-900/50 dark:text-amber-200">
+                        example data
+                      </span>
+                    </div>
+                    <dl class="grid gap-2 sm:grid-cols-2 text-sm">
+                      <div class="flex justify-between gap-3 sm:col-span-2">
+                        <dt class="text-slate-500">Hotel</dt>
+                        <dd id="mysteryHotelName" class="font-medium text-right">—</dd>
+                      </div>
+                      <div class="flex justify-between gap-3">
+                        <dt class="text-slate-500">Nights</dt>
+                        <dd id="mysteryHotelNights" class="font-medium text-right">—</dd>
+                      </div>
+                      <div class="flex justify-between gap-3">
+                        <dt class="text-slate-500">Hotel cost</dt>
+                        <dd id="mysteryHotelCost" class="font-medium text-right">—</dd>
+                      </div>
+                      <div class="flex justify-between gap-3">
+                        <dt class="text-slate-500">Flight + luggage</dt>
+                        <dd id="mysteryFlightCost" class="font-medium text-right">—</dd>
+                      </div>
+                      <div class="flex justify-between gap-3">
+                        <dt class="text-slate-500">Total estimate</dt>
+                        <dd id="mysteryTotalCost" class="font-semibold text-right">—</dd>
+                      </div>
+                    </dl>
+                  </div>
+
+                  <div class="rounded-xl border border-slate-200 p-3 dark:border-slate-700 bg-white/70 dark:bg-slate-900/40">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                      <p class="font-medium">Available routes</p>
+                    </div>
+                    <div id="routeContent" class="text-sm text-slate-700 dark:text-slate-200">
+                      Generate your trip first. Routes are unlocked after landing.
                     </div>
                   </div>
                 </div>
@@ -617,6 +888,22 @@
                   Clear
                 </button>
               </div>
+
+              <div
+                class="panel-card p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
+              >
+                <p class="section-kicker mb-2">Controls</p>
+                <h2 class="panel-title text-lg sm:text-xl mb-3">Settings</h2>
+                <p class="text-xs sm:text-sm text-slate-500 mb-4">
+                  Manage travel generation data for the current account.
+                </p>
+                <button
+                  id="clearTripsBtn"
+                  class="inline-flex items-center justify-center gap-2 rounded-full bg-amber-100 px-4 py-2 text-sm font-semibold text-amber-800 shadow-sm hover:bg-amber-200 dark:bg-amber-900/40 dark:text-amber-200"
+                >
+                  Delete all generated trips
+                </button>
+              </div>
             </section>
 
             <!-- Side panel / Summary -->
@@ -625,10 +912,10 @@
               aria-label="Profile summary"
             >
               <div
-                class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
+                class="panel-card p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
               >
                 <div class="flex items-center justify-between mb-3">
-                  <h2 class="text-base font-semibold">Live summary</h2>
+                  <h2 class="panel-title text-lg">Live summary</h2>
                   <span
                     id="answersCount"
                     class="inline-flex items-center rounded-full bg-brand-softer px-2.5 py-1 text-xs font-medium text-brand"
@@ -642,24 +929,32 @@
                     <dd id="resumoPassaporte" class="font-medium text-right">—</dd>
                   </div>
                   <div class="flex justify-between gap-4">
-                    <dt class="text-slate-500">Visa</dt>
-                    <dd id="resumoVisto" class="font-medium text-right">—</dd>
+                    <dt class="text-slate-500">Trip type</dt>
+                    <dd id="resumoTripType" class="font-medium text-right">—</dd>
                   </div>
                   <div class="flex justify-between gap-4">
                     <dt class="text-slate-500">Climate</dt>
                     <dd id="resumoClima" class="font-medium text-right">—</dd>
                   </div>
                   <div class="flex justify-between gap-4">
-                    <dt class="text-slate-500">Trip type</dt>
-                    <dd id="resumoTipoViagem" class="font-medium text-right">—</dd>
-                  </div>
-                  <div class="flex justify-between gap-4">
-                    <dt class="text-slate-500">Dates</dt>
-                    <dd id="resumoDatas" class="font-medium text-right">—</dd>
-                  </div>
-                  <div class="flex justify-between gap-4">
                     <dt class="text-slate-500">Luggage</dt>
                     <dd id="resumoBagagem" class="font-medium text-right">—</dd>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Availability</dt>
+                    <dd id="resumoDisponibilidade" class="font-medium text-right">—</dd>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Stay</dt>
+                    <dd id="resumoEstadia" class="font-medium text-right">1 day</dd>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Departure</dt>
+                    <dd id="resumoDeparture" class="font-medium text-right">—</dd>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Destination</dt>
+                    <dd id="resumoDestino" class="font-medium text-right">—</dd>
                   </div>
                 </dl>
 
@@ -676,37 +971,59 @@
                 </div>
               </div>
 
-              <!-- Score & Recommendations -->
+              <!-- Flight details -->
               <div
-                class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
+                class="panel-card p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
               >
                 <div class="flex items-center justify-between mb-3">
-                  <h2 class="text-base font-semibold">Compatibility &amp; Recommendations</h2>
-                  <span
-                    id="scoreBadge"
-                    class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-200"
-                    >Score: 0%</span
-                  >
+                  <h2 class="panel-title text-lg">Flight details</h2>
                 </div>
-
-                <p class="text-xs text-slate-500 mb-3">
-                  Based on the preferences indicated, we suggest some destinations aligned with your
-                  profile.
-                </p>
-
-                <div id="recomendacoesLista" class="space-y-2 text-sm">
-                  <p class="text-slate-500 text-sm">
-                    Complete your profile to see personalised recommendations.
-                  </p>
-                </div>
+                <dl class="space-y-2 text-sm">
+                  <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Outbound</dt>
+                    <dd id="summaryFlightDate" class="font-medium text-right">—</dd>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Return</dt>
+                    <dd id="summaryReturnFlightDate" class="font-medium text-right">—</dd>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Gate</dt>
+                    <dd id="summaryGate" class="font-medium text-right">—</dd>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Return gate</dt>
+                    <dd id="summaryReturnGate" class="font-medium text-right">—</dd>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Aircraft door</dt>
+                    <dd id="summaryDoor" class="font-medium text-right">—</dd>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Return aircraft door</dt>
+                    <dd id="summaryReturnDoor" class="font-medium text-right">—</dd>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Seat</dt>
+                    <dd id="summarySeat" class="font-medium text-right">—</dd>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Return seat</dt>
+                    <dd id="summaryReturnSeat" class="font-medium text-right">—</dd>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <dt class="text-slate-500">Estimated final cost</dt>
+                    <dd id="summaryCost" class="font-medium text-right">—</dd>
+                  </div>
+                </dl>
               </div>
 
               <!-- Accessible countries -->
               <div
-                class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
+                class="panel-card p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
               >
                 <div class="flex items-center justify-between mb-3">
-                  <h2 class="text-base font-semibold">Accessible countries</h2>
+                  <h2 class="panel-title text-lg">Accessible countries</h2>
                 </div>
                 <p class="text-xs text-slate-500 mb-3">
                   List based on your passport, visas, and willingness to obtain new visas.
@@ -720,6 +1037,27 @@
                   </li>
                 </ul>
               </div>
+
+              <div
+                class="panel-card p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
+              >
+                <div class="flex items-center justify-between mb-3">
+                  <h2 class="panel-title text-lg">Badges</h2>
+                  <span
+                    id="badgesCount"
+                    class="text-[0.7rem] rounded-full bg-slate-100 px-2 py-0.5 font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-100"
+                  >
+                    0
+                  </span>
+                </div>
+                <p class="text-xs text-slate-500 mb-3">
+                  Badges you have unlocked by completing mystery routes.
+                </p>
+                <ul id="badgesList" class="space-y-2 text-sm">
+                  <li class="text-slate-500 text-sm">No badges unlocked yet.</li>
+                </ul>
+              </div>
+
             </aside>
           </div>
         </section>
@@ -731,7 +1069,7 @@
         >
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="text-lg sm:text-xl font-semibold mb-1">Visited countries</h2>
+              <h2 class="panel-title text-xl sm:text-2xl mb-1">Visited countries</h2>
               <p class="text-sm text-slate-600">
                 Select the countries you have already visited and visualise your travel map.
               </p>
@@ -741,9 +1079,9 @@
           <div class="grid gap-6 lg:grid-cols-2 items-start">
             <!-- Country list -->
             <div
-              class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
+              class="panel-card p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
             >
-              <h3 class="text-base font-semibold mb-3">Country list</h3>
+              <h3 class="panel-title text-lg mb-3">Country list</h3>
               <p class="text-xs text-slate-500 mb-4">
                 Use the “Visited” column to register the destinations you have already been to.
               </p>
@@ -770,10 +1108,10 @@
 
             <!-- Stylised world map -->
             <div
-              class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
+              class="panel-card p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
             >
               <div class="flex items-center justify-between mb-3">
-                <h3 class="text-base font-semibold">Travel map</h3>
+                <h3 class="panel-title text-lg">Travel map</h3>
                 <span class="text-xs text-slate-500">See visited countries highlighted</span>
               </div>
               <div
@@ -789,6 +1127,16 @@
               </p>
             </div>
           </div>
+
+          <div class="panel-card p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800">
+            <h3 class="panel-title text-lg mb-2">Visited trips (country + city + costs)</h3>
+            <p class="text-xs text-slate-500 mb-4">
+              Completed mystery trips save hotel and a cost breakdown when you press “I landed”.
+            </p>
+            <ul id="visitedTripsList" class="space-y-2">
+              <!-- filled by JS -->
+            </ul>
+          </div>
         </section>
 
         <!-- Countries section -->
@@ -798,7 +1146,7 @@
         >
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="text-lg sm:text-xl font-semibold mb-1">Countries &amp; Access</h2>
+              <h2 class="panel-title text-xl sm:text-2xl mb-1">Countries &amp; Access</h2>
               <p class="text-sm text-slate-600">
                 Check destinations, visa requirements, and access status based on your profile.
               </p>
@@ -807,7 +1155,7 @@
 
           <!-- Filters -->
           <div
-            class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-5 dark:bg-slate-900 dark:border-slate-800"
+            class="panel-card p-4 sm:p-5 dark:bg-slate-900 dark:border-slate-800"
           >
             <div class="grid gap-4 sm:grid-cols-3 text-sm">
               <div>
@@ -864,6 +1212,14 @@
         id="toastContainer"
         class="fixed inset-x-0 top-4 flex flex-col items-center space-y-2 z-50 pointer-events-none"
       ></div>
+
+      <div id="mysteryModal" class="mystery-modal fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-950/50 backdrop-blur-[2px]"></div>
+        <div class="relative rounded-2xl border border-emerald-300 bg-white px-6 py-5 text-center shadow-2xl">
+          <p class="text-xs uppercase tracking-widest text-emerald-700 font-semibold">The Unknown</p>
+          <p class="mt-2 text-lg sm:text-2xl font-extrabold text-slate-900">Mystery Trip Generated!</p>
+        </div>
+      </div>
 
       <!-- Simple footer -->
       <footer

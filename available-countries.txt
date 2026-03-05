@@ -1,0 +1,17 @@
+Profile countries (COUNTRIES_DATA)
+- Portugal
+- Espanha
+- Estados Unidos
+- Brasil
+- Japão
+- África do Sul
+- Austrália
+
+Mystery trip destination countries (CITY_TO_COUNTRY)
+- Italy (Rome)
+- France (Paris)
+- Japan (Kyoto)
+- Monaco (Monte Carlo)
+- Norway (Tromso)
+- Spain (Barcelona)
+

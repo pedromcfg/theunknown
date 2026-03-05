@@ -63,9 +63,7 @@ function ensureStateDefaults() {
   if (!state.viagemMisterio.aeroporto) {
     state.viagemMisterio.aeroporto = state.departureAirport;
   }
-  const maxStayDays = getStayDaysMax();
   if (state.stayDays < 1) state.stayDays = 1;
-  if (state.stayDays > maxStayDays) state.stayDays = maxStayDays;
 }
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -126,33 +124,6 @@ function computeReturnDateTime(outboundDateTime) {
   const returnMinute = Math.abs(Math.floor(seed / 7)) % 60; // 00..59
   returnDate.setHours(returnHour, returnMinute, 0, 0);
   return formatLocalDateTime(returnDate);
-}
-
-function updateStayDaysUI() {
-  const slider = document.getElementById('stayDaysRange');
-  const value = document.getElementById('stayDaysValue');
-  const hint = document.getElementById('stayDaysHint');
-  const resumoEstadia = document.getElementById('resumoEstadia');
-  const max = getStayDaysMax();
-  const normalized = Math.min(max, Math.max(1, Number(state.stayDays) || 1));
-  state.stayDays = normalized;
-
-  if (slider) {
-    slider.min = '1';
-    slider.max = String(max);
-    slider.value = String(normalized);
-  }
-  if (value) {
-    value.textContent = `${normalized} day${normalized === 1 ? '' : 's'}`;
-  }
-  if (resumoEstadia) {
-    resumoEstadia.textContent = `${normalized} day${normalized === 1 ? '' : 's'}`;
-  }
-  if (hint) {
-    hint.textContent = `Choose your stay length. Maximum allowed by your availability: ${max} day${
-      max === 1 ? '' : 's'
-    }.`;
-  }
 }
 
 function setupMysteryHubLayout() {
@@ -284,7 +255,6 @@ function updateResumo() {
   const resumoClima = document.getElementById('resumoClima');
   const resumoBagagem = document.getElementById('resumoBagagem');
   const resumoDisponibilidade = document.getElementById('resumoDisponibilidade');
-  const resumoEstadia = document.getElementById('resumoEstadia');
   const resumoDeparture = document.getElementById('resumoDeparture');
   const resumoDestino = document.getElementById('resumoDestino');
   const resumoPaisesVisitados = document.getElementById('resumoPaisesVisitados');
@@ -295,7 +265,6 @@ function updateResumo() {
     !resumoClima ||
     !resumoBagagem ||
     !resumoDisponibilidade ||
-    !resumoEstadia ||
     !resumoDeparture ||
     !resumoDestino
   ) {
@@ -338,9 +307,6 @@ function updateResumo() {
   } else {
     resumoDisponibilidade.textContent = '—';
   }
-
-  resumoEstadia.textContent = `${state.stayDays} day${state.stayDays === 1 ? '' : 's'}`;
-  respostas++;
 
   resumoDeparture.textContent = state.departureAirport || '—';
   if (state.departureAirport) respostas++;
@@ -549,59 +515,81 @@ const CITY_TO_COUNTRY = {
 };
 
 const HOTEL_SAMPLES = {
-  Rome: [
-    { name: 'Hotel Trastevere Vista', nightly: 95 },
-    { name: 'Roma Centro Boutique', nightly: 118 }
-  ],
-  Paris: [
-    { name: 'Hotel Lumiere Paris', nightly: 132 },
-    { name: 'Montmartre Urban Stay', nightly: 146 }
-  ],
-  Kyoto: [
-    { name: 'Kyoto Garden Inn', nightly: 165 },
-    { name: 'Arashiyama River Hotel', nightly: 182 }
-  ],
-  'Monte Carlo': [
-    { name: 'Riviera Marina Hotel', nightly: 210 },
-    { name: 'Casino District Suites', nightly: 238 }
-  ],
-  Tromso: [
-    { name: 'Northern Lights Lodge', nightly: 156 },
-    { name: 'Fjord Polar Hotel', nightly: 171 }
-  ],
-  Barcelona: [
-    { name: 'Barri Gotic City Hotel', nightly: 124 },
-    { name: 'Sagrada Urban Rooms', nightly: 138 }
-  ]
+  Rome: {
+    name: 'Grand Hotel Palatino',
+    nights: 3,
+    hotelCost: 685.5,
+    flightCostBase: 287.57
+  },
+  Paris: {
+    name: 'Hotel Eiffel Seine',
+    nights: 5,
+    hotelCost: 1135,
+    flightCostBase: 218
+  },
+  Kyoto: {
+    name: 'Wander Kyoto Nanjo',
+    nights: 4,
+    hotelCost: 290,
+    flightCostBase: 2025.96
+  },
+  'Monte Carlo': {
+    name: 'Fairmont Monte-Carlo',
+    nights: 4,
+    hotelCost: 4034,
+    flightCostBase: 534
+  },
+  Tromso: {
+    name: 'St. Elisabeth Suites',
+    nights: 3,
+    hotelCost: 565,
+    flightCostBase: 1434.28
+  },
+  Barcelona: {
+    name: 'Hotel Europark',
+    nights: 3,
+    hotelCost: 1461,
+    flightCostBase: 170
+  }
 };
 
 function getFlightCost(city, luggage) {
-  const baseCostByCity = {
-    Rome: 320,
-    Paris: 350,
-    Kyoto: 980,
-    'Monte Carlo': 420,
-    Tromso: 640,
-    Barcelona: 300
-  };
+  const pricing = HOTEL_SAMPLES[city];
+  const baseCost = pricing && typeof pricing.flightCostBase === 'number' ? pricing.flightCostBase : 300;
   const luggageExtra = {
     mao10: 0,
     porao20: 35,
     porao50: 80
   };
-  return (baseCostByCity[city] || 300) + (luggageExtra[luggage] || 0);
+  return baseCost + (luggageExtra[luggage] || 0);
 }
 
 function buildHotelAndCostPreview(city) {
-  const samples = HOTEL_SAMPLES[city] || [{ name: 'City Center Hotel', nightly: 120 }];
-  const selected = samples[Math.floor(Math.random() * samples.length)];
-  const nights = Math.max(1, Number(state.stayDays) || 1);
-  const hotelCost = selected.nightly * nights;
+  const pricing = HOTEL_SAMPLES[city];
+  if (!pricing) {
+    const fallbackNightly = 120;
+    const nightsFallback = Math.max(1, Number(state.stayDays) || 1);
+    const hotelCostFallback = fallbackNightly * nightsFallback;
+    const flightCostFallback = getFlightCost(city, state.luggage);
+    const totalFallback = hotelCostFallback + flightCostFallback;
+    return {
+      hotelName: 'City Center Hotel',
+      hotelNightly: fallbackNightly,
+      hotelNights: nightsFallback,
+      hotelCost: hotelCostFallback,
+      flightCost: flightCostFallback,
+      totalCost: totalFallback
+    };
+  }
+
+  const nights = pricing.nights || Math.max(1, Number(state.stayDays) || 1);
+  const hotelCost = pricing.hotelCost;
+  const hotelNightly = Number((hotelCost / nights).toFixed(2));
   const flightCost = getFlightCost(city, state.luggage);
   const totalCost = hotelCost + flightCost;
   return {
-    hotelName: selected.name,
-    hotelNightly: selected.nightly,
+    hotelName: pricing.name,
+    hotelNightly,
     hotelNights: nights,
     hotelCost,
     flightCost,
@@ -1018,7 +1006,6 @@ function syncUIFromState() {
   const availabilityEnd = document.getElementById('availabilityEnd');
   if (availabilityStart) availabilityStart.value = state.availabilityStart || '';
   if (availabilityEnd) availabilityEnd.value = state.availabilityEnd || '';
-  updateStayDaysUI();
 
   document.querySelectorAll('input[name="tripType"]').forEach((radio) => {
     radio.checked = radio.value === state.tripType;
@@ -1112,7 +1099,6 @@ function setupListeners() {
   if (availabilityStart) {
     availabilityStart.addEventListener('change', (e) => {
       state.availabilityStart = e.target.value;
-      updateStayDaysUI();
       if (state.viagemMisterio.dataHora) {
         state.viagemMisterio.returnDataHora = computeReturnDateTime(state.viagemMisterio.dataHora);
       }
@@ -1125,7 +1111,6 @@ function setupListeners() {
   if (availabilityEnd) {
     availabilityEnd.addEventListener('change', (e) => {
       state.availabilityEnd = e.target.value;
-      updateStayDaysUI();
       if (state.viagemMisterio.dataHora) {
         state.viagemMisterio.returnDataHora = computeReturnDateTime(state.viagemMisterio.dataHora);
       }
@@ -1133,20 +1118,6 @@ function setupListeners() {
       updateResumo();
       updateProgress();
       renderViagemMisterio();
-    });
-  }
-  const stayDaysRange = document.getElementById('stayDaysRange');
-  if (stayDaysRange) {
-    stayDaysRange.addEventListener('input', (e) => {
-      state.stayDays = Number(e.target.value) || 1;
-      updateStayDaysUI();
-      if (state.viagemMisterio.dataHora) {
-        state.viagemMisterio.returnDataHora = computeReturnDateTime(state.viagemMisterio.dataHora);
-        renderViagemMisterio();
-      }
-      saveToStorage();
-      updateResumo();
-      updateProgress();
     });
   }
 
@@ -1350,15 +1321,16 @@ function gerarViagemMisterioAuto() {
     showToast('Invalid availability range.', 'error');
     return false;
   }
-  const stayDays = Math.min(getStayDaysMax(), Math.max(1, Number(state.stayDays) || 1));
-  state.stayDays = stayDays;
-
   const matchedRule = DESTINATION_RULES.find(
     (r) => r.passaporte === state.passaporte && r.tripType === state.tripType
   );
   const cities = Object.keys(ROUTE_LIBRARY);
   const randomCity = cities[Math.floor(Math.random() * cities.length)];
   const selectedCity = matchedRule ? matchedRule.city : randomCity;
+
+  const cityPricing = HOTEL_SAMPLES[selectedCity];
+  const stayDays = cityPricing && cityPricing.nights ? cityPricing.nights : Math.max(1, Number(state.stayDays) || 1);
+  state.stayDays = stayDays;
 
   // Gate 1-40
   const portaEmbarque = `G${Math.floor(Math.random() * 40) + 1}`;

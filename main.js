@@ -45,6 +45,7 @@ const ACTIVE_USER_KEY = 'theUnknownActiveUser';
 
 let state = { ...initialState };
 let activeUser = null;
+let pendingSuggestedCity = null;
 
 function ensureStateDefaults() {
   state.departureAirport = state.departureAirport || initialState.departureAirport;
@@ -229,6 +230,20 @@ function showMysteryModal() {
   setTimeout(() => {
     modal.classList.remove('show');
   }, 1650);
+}
+
+function openSuggestionModal(city) {
+  pendingSuggestedCity = city;
+  const modal = document.getElementById('suggestionModal');
+  const label = document.getElementById('suggestionCityLabel');
+  if (label) label.textContent = city;
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeSuggestionModal() {
+  const modal = document.getElementById('suggestionModal');
+  if (modal) modal.classList.add('hidden');
+  pendingSuggestedCity = null;
 }
 
 // Small animation helper via inline CSS
@@ -497,12 +512,13 @@ function getMysteryCluesForCity(city, tripTheme) {
 }
 
 const DESTINATION_RULES = [
-  { passaporte: 'nao', tripType: 'religious', city: 'Rome' },
-  { passaporte: 'nao', tripType: 'gastronomic', city: 'Paris' },
-  { passaporte: 'sim', tripType: 'nature', city: 'Kyoto' },
-  { passaporte: 'nao', tripType: 'sunBeach', city: 'Monte Carlo' },
-  { passaporte: 'nao', tripType: 'adventure', city: 'Tromso' },
-  { passaporte: 'nao', tripType: 'cultural', city: 'Barcelona' }
+  { tripType: 'religious', city: 'Rome' },
+  { tripType: 'gastronomic', city: 'Paris' },
+  // Kyoto is the only destination that strictly requires a passport
+  { tripType: 'nature', city: 'Kyoto', requiresPassport: true },
+  { tripType: 'sunBeach', city: 'Monte Carlo' },
+  { tripType: 'adventure', city: 'Tromso' },
+  { tripType: 'cultural', city: 'Barcelona' }
 ];
 
 const CITY_TO_COUNTRY = {
@@ -1155,6 +1171,8 @@ function setupListeners() {
   const landedBtn = document.getElementById('landedBtn');
   const heroGenerateBtn = document.getElementById('heroGenerateBtn');
   const mysteryHubSection = document.getElementById('mysteryHubSection');
+  const suggestionAcceptBtn = document.getElementById('suggestionAcceptBtn');
+  const suggestionCancelBtn = document.getElementById('suggestionCancelBtn');
 
   if (dataHoraInput) {
     dataHoraInput.addEventListener('change', (e) => {
@@ -1171,12 +1189,14 @@ function setupListeners() {
   }
   if (heroGenerateBtn) {
     heroGenerateBtn.addEventListener('click', () => {
-      const created = gerarViagemMisterioAuto();
-      if (!created) return;
-      if (mysteryHubSection) mysteryHubSection.classList.remove('hidden');
-      updateResumo();
-      updateProgress();
-      showToast('Random destination generated.', 'success');
+      const result = gerarViagemMisterioAuto();
+      if (result === true) {
+        if (mysteryHubSection) mysteryHubSection.classList.remove('hidden');
+        updateResumo();
+        updateProgress();
+        showToast('Mystery trip generated.', 'success');
+      }
+      // if result is 'pending', a suggestion modal is shown and we wait for user action
     });
   }
   if (landedBtn) {
@@ -1216,6 +1236,29 @@ function setupListeners() {
       updateResumo();
       updateProgress();
       showToast('Landing confirmed. Routes unlocked.', 'success');
+    });
+  }
+
+  if (suggestionAcceptBtn) {
+    suggestionAcceptBtn.addEventListener('click', () => {
+      if (!pendingSuggestedCity) {
+        closeSuggestionModal();
+        return;
+      }
+      const created = gerarViagemMisterioAuto(pendingSuggestedCity);
+      closeSuggestionModal();
+      if (!created) return;
+      if (mysteryHubSection) mysteryHubSection.classList.remove('hidden');
+      updateResumo();
+      updateProgress();
+      showToast('Alternative mystery trip generated.', 'success');
+    });
+  }
+
+  if (suggestionCancelBtn) {
+    suggestionCancelBtn.addEventListener('click', () => {
+      closeSuggestionModal();
+      showToast('No trip was generated for that combination.', 'info');
     });
   }
 
@@ -1300,7 +1343,7 @@ function setupListeners() {
 }
 
 // Mystery trip: helpers
-function gerarViagemMisterioAuto() {
+function gerarViagemMisterioAuto(forcedCity) {
   if (!state.availabilityStart || !state.availabilityEnd) {
     showToast('Set your availability dates first.', 'error');
     return false;
@@ -1312,12 +1355,32 @@ function gerarViagemMisterioAuto() {
     showToast('Invalid availability range.', 'error');
     return false;
   }
-  const matchedRule = DESTINATION_RULES.find(
-    (r) => r.passaporte === state.passaporte && r.tripType === state.tripType
-  );
-  const cities = Object.keys(ROUTE_LIBRARY);
-  const randomCity = cities[Math.floor(Math.random() * cities.length)];
-  const selectedCity = matchedRule ? matchedRule.city : randomCity;
+  let selectedCity = forcedCity || null;
+
+  if (!selectedCity) {
+    const matchedRule = DESTINATION_RULES.find((r) => {
+      if (r.requiresPassport && state.passaporte !== 'sim') return false;
+      return r.tripType === state.tripType;
+    });
+
+    let cities = Object.keys(ROUTE_LIBRARY);
+    // If the user has no passport, they cannot be randomly sent to Kyoto
+    if (state.passaporte !== 'sim') {
+      cities = cities.filter((c) => c !== 'Kyoto');
+    }
+
+    if (matchedRule) {
+      selectedCity = matchedRule.city;
+    } else {
+      // No exact match for this combination: suggest an alternative among the 5 non-Kyoto cities
+      const suggestionPool = cities.filter((c) => c !== 'Kyoto');
+      const suggestionCity =
+        suggestionPool[Math.floor(Math.random() * suggestionPool.length)] ||
+        cities[Math.floor(Math.random() * cities.length)];
+      openSuggestionModal(suggestionCity);
+      return 'pending';
+    }
+  }
 
   const cityPricing = HOTEL_SAMPLES[selectedCity];
   const stayDays = cityPricing && cityPricing.nights ? cityPricing.nights : Math.max(1, Number(state.stayDays) || 1);

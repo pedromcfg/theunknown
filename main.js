@@ -425,6 +425,24 @@ const COUNTRIES_DATA = [
   }
 ];
 
+const COUNTRY_COORDS = {
+  // Profile countries (Portuguese labels)
+  Portugal: [39.5, -8],
+  Espanha: [40, -4],
+  'Estados Unidos': [39, -98],
+  Brasil: [-14, -52],
+  Japão: [36, 138],
+  'África do Sul': [-30, 25],
+  Austrália: [-25, 133],
+  // Mystery trip destination countries (English labels used in CITY_TO_COUNTRY)
+  Italy: [42.5, 12.5],
+  France: [46.5, 2.5],
+  Japan: [36, 138],
+  Monaco: [43.73, 7.42],
+  Norway: [61, 8],
+  Spain: [40, -4]
+};
+
 const ROUTE_LIBRARY = {
   Rome: {
     generalRoute: ['Coliseu', 'Fórum Romano', 'Panteão', 'Fontana di Trevi', 'Piazza Navona', 'Piazza Venezia'],
@@ -574,6 +592,9 @@ const PROFIT_MULTIPLIER = 1.15;
 function roundCurrency(amount) {
   return Math.round((Number(amount) || 0) * 100) / 100;
 }
+
+let leafletMap = null;
+let leafletMarkersLayer = null;
 
 function getFlightCost(city, luggage) {
   const pricing = HOTEL_SAMPLES[city];
@@ -818,8 +839,8 @@ function renderCountriesGrid() {
   });
 }
 
-// Stylised world map with visited countries
-function renderWorldMap() {
+// Stylised world map with visited countries (backup, not used)
+function renderWorldMapBackup() {
   const mapContainer = document.getElementById('worldMap');
   if (!mapContainer) return;
 
@@ -866,6 +887,74 @@ function renderWorldMap() {
   wrapper.appendChild(grid);
   wrapper.appendChild(legend);
   mapContainer.appendChild(wrapper);
+}
+
+// Leaflet-based world map with zoom and markers for visited countries
+function renderWorldMap() {
+  const mapContainer = document.getElementById('worldMap');
+  if (!mapContainer) return;
+
+  // If Leaflet failed to load, show a small fallback message
+  if (typeof L === 'undefined') {
+    mapContainer.innerHTML =
+      '<p class="text-xs text-slate-500">Interactive map could not be loaded.</p>';
+    return;
+  }
+
+  // Initialise map once
+  if (!leafletMap) {
+    mapContainer.innerHTML = '';
+    leafletMap = L.map(mapContainer).setView([20, 0], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(leafletMap);
+    leafletMarkersLayer = L.layerGroup().addTo(leafletMap);
+  }
+
+  leafletMarkersLayer.clearLayers();
+
+  const visitedNames = new Set();
+  // Countries marked manually in the profile
+  (state.been || []).forEach((name) => {
+    if (name) visitedNames.add(name);
+  });
+  // Countries from landed mystery trips
+  (state.generatedTrips || [])
+    .filter((trip) => trip && trip.landedAt && trip.country)
+    .forEach((trip) => {
+      visitedNames.add(trip.country);
+    });
+
+  const visitedCountries = Array.from(visitedNames);
+
+  if (!visitedCountries.length) {
+    // No markers; just keep default world view
+    leafletMap.setView([20, 0], 2);
+    return;
+  }
+
+  const bounds = [];
+
+  visitedCountries.forEach((name) => {
+    const coords = COUNTRY_COORDS[name];
+    if (!coords) return;
+    const marker = L.circleMarker(coords, {
+      radius: 6,
+      color: '#16a34a',
+      weight: 2,
+      fillColor: '#22c55e',
+      fillOpacity: 0.9
+    }).bindPopup(`<strong>${name}</strong>`);
+    marker.addTo(leafletMarkersLayer);
+    bounds.push(coords);
+  });
+
+  if (bounds.length) {
+    leafletMap.fitBounds(bounds, { padding: [30, 30], maxZoom: 5 });
+  } else {
+    leafletMap.setView([20, 0], 2);
+  }
 }
 
 // List of accessible countries in the side panel
@@ -1233,6 +1322,7 @@ function setupListeners() {
       renderViagemMisterio();
       renderRouteContent();
       renderVisitedTrips();
+      renderWorldMap();
       updateResumo();
       updateProgress();
       showToast('Landing confirmed. Routes unlocked.', 'success');

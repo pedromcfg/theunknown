@@ -553,6 +553,12 @@ const HOTEL_SAMPLES = {
   }
 };
 
+const PROFIT_MULTIPLIER = 1.15;
+
+function roundCurrency(amount) {
+  return Math.round((Number(amount) || 0) * 100) / 100;
+}
+
 function getFlightCost(city, luggage) {
   const pricing = HOTEL_SAMPLES[city];
   const baseCost = pricing && typeof pricing.flightCostBase === 'number' ? pricing.flightCostBase : 300;
@@ -571,7 +577,7 @@ function buildHotelAndCostPreview(city) {
     const nightsFallback = Math.max(1, Number(state.stayDays) || 1);
     const hotelCostFallback = fallbackNightly * nightsFallback;
     const flightCostFallback = getFlightCost(city, state.luggage);
-    const totalFallback = hotelCostFallback + flightCostFallback;
+    const totalFallback = roundCurrency((hotelCostFallback + flightCostFallback) * PROFIT_MULTIPLIER);
     return {
       hotelName: 'City Center Hotel',
       hotelNightly: fallbackNightly,
@@ -586,7 +592,7 @@ function buildHotelAndCostPreview(city) {
   const hotelCost = pricing.hotelCost;
   const hotelNightly = Number((hotelCost / nights).toFixed(2));
   const flightCost = getFlightCost(city, state.luggage);
-  const totalCost = hotelCost + flightCost;
+  const totalCost = roundCurrency((hotelCost + flightCost) * PROFIT_MULTIPLIER);
   return {
     hotelName: pricing.name,
     hotelNightly,
@@ -886,21 +892,16 @@ function setupNavigation() {
   const navButtons = document.querySelectorAll('.nav-link');
   const landingSection = document.getElementById('landingSection');
   const homeSection = document.getElementById('homeSection');
-  const paisesSection = document.getElementById('paisesSection');
   const visitadosSection = document.getElementById('visitadosSection');
   const logoHomeBtn = document.getElementById('logoHomeBtn');
 
   function showSection(target) {
     if (landingSection) landingSection.classList.add('hidden');
     homeSection.classList.add('hidden');
-    paisesSection.classList.add('hidden');
     if (visitadosSection) visitadosSection.classList.add('hidden');
 
     if (target === 'landing') {
       if (landingSection) landingSection.classList.remove('hidden');
-    } else if (target === 'paises') {
-      paisesSection.classList.remove('hidden');
-      renderCountriesGrid();
     } else if (target === 'visitados') {
       if (visitadosSection) {
         visitadosSection.classList.remove('hidden');
@@ -910,7 +911,6 @@ function setupNavigation() {
       }
     } else {
       homeSection.classList.remove('hidden');
-      renderCountriesGrid();
     }
   }
 
@@ -1046,8 +1046,6 @@ function syncUIFromState() {
 
   updateResumo();
   updateProgress();
-  updatePaisesAcessiveis();
-  renderCountriesGrid();
   renderVisitadosTabela();
   renderWorldMap();
   renderVisitedTrips();
@@ -1281,14 +1279,7 @@ function setupListeners() {
   }
 
   // Filtros países
-  ['filtroContinente', 'filtroVisto', 'filtroStatus'].forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.addEventListener('change', () => {
-        renderCountriesGrid();
-      });
-    }
-  });
+  // (Countries section removed)
 
   // Logout
   const logoutBtn = document.getElementById('logoutBtn');

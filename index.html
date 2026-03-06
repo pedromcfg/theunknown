@@ -190,12 +190,6 @@
                 Profile
               </button>
               <button
-                data-nav="paises"
-                class="nav-link text-slate-600 hover:text-brand-light px-3 py-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
-              >
-                Countries
-              </button>
-              <button
                 data-nav="visitados"
                 class="nav-link text-slate-600 hover:text-brand-light px-3 py-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
               >
@@ -995,26 +989,6 @@
                 </dl>
               </div>
 
-              <!-- Accessible countries -->
-              <div
-                class="panel-card p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
-              >
-                <div class="flex items-center justify-between mb-3">
-                  <h2 class="panel-title text-lg">Accessible countries</h2>
-                </div>
-                <p class="text-xs text-slate-500 mb-3">
-                  List based on your passport, visas, and willingness to obtain new visas.
-                </p>
-                <ul
-                  id="paisesAcessiveisLista"
-                  class="text-sm space-y-1 max-h-40 overflow-y-auto pr-1"
-                >
-                  <li class="text-slate-500 text-sm">
-                    Complete your passport and visa information to see this list.
-                  </li>
-                </ul>
-              </div>
-
               <div
                 class="panel-card p-5 sm:p-6 dark:bg-slate-900 dark:border-slate-800"
               >
@@ -1114,72 +1088,6 @@
               <!-- filled by JS -->
             </ul>
           </div>
-        </section>
-
-        <!-- Countries section -->
-        <section
-          id="paisesSection"
-          class="hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6"
-        >
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <h2 class="panel-title text-xl sm:text-2xl mb-1">Countries &amp; Access</h2>
-              <p class="text-sm text-slate-600">
-                Check destinations, visa requirements, and access status based on your profile.
-              </p>
-            </div>
-          </div>
-
-          <!-- Filters -->
-          <div
-            class="panel-card p-4 sm:p-5 dark:bg-slate-900 dark:border-slate-800"
-          >
-            <div class="grid gap-4 sm:grid-cols-3 text-sm">
-              <div>
-                <label class="block font-medium mb-1" for="filtroContinente">Continent</label>
-                <select
-                  id="filtroContinente"
-                  class="mt-1 block w-full rounded-xl border-slate-200 bg-white py-2 px-3 text-sm shadow-sm focus:border-brand focus:ring-brand dark:bg-slate-900 dark:border-slate-700"
-                >
-                  <option value="">All</option>
-                  <option value="Europa">Europe</option>
-                  <option value="América">America</option>
-                  <option value="Ásia">Asia</option>
-                  <option value="África">Africa</option>
-                  <option value="Oceania">Oceania</option>
-                </select>
-              </div>
-              <div>
-                <label class="block font-medium mb-1" for="filtroVisto">Visa type</label>
-                <select
-                  id="filtroVisto"
-                  class="mt-1 block w-full rounded-xl border-slate-200 bg-white py-2 px-3 text-sm shadow-sm focus:border-brand focus:ring-brand dark:bg-slate-900 dark:border-slate-700"
-                >
-                  <option value="">All</option>
-                  <option value="naoPrecisa">Not required</option>
-                  <option value="necessita">Required</option>
-                  <option value="onArrival">Visa on arrival</option>
-                </select>
-              </div>
-              <div>
-                <label class="block font-medium mb-1" for="filtroStatus">Access status</label>
-                <select
-                  id="filtroStatus"
-                  class="mt-1 block w-full rounded-xl border-slate-200 bg-white py-2 px-3 text-sm shadow-sm focus:border-brand focus:ring-brand dark:bg-slate-900 dark:border-slate-700"
-                >
-                  <option value="">All</option>
-                  <option value="Liberado">Available</option>
-                  <option value="Restrito">Unavailable</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <!-- Countries grid -->
-          <div
-            id="countriesGrid"
-            class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-          ></div>
         </section>
 
       </main>

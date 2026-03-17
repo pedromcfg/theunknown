@@ -445,25 +445,36 @@ const COUNTRY_COORDS = {
 
 const ROUTE_LIBRARY = {
   Rome: {
-    generalRoute: ['Coliseu', 'Fórum Romano', 'Panteão', 'Fontana di Trevi', 'Piazza Navona', 'Piazza Venezia'],
+    // Vatican + Historic Center · General
+    generalRoute: [
+      'Colosseum',
+      'Roman Forum',
+      'Pantheon',
+      'Trevi Fountain',
+      'Piazza Navona',
+      'Piazza Venezia'
+    ],
     thematicRoutes: {
+      // Religious Route
       religious: [
-        'Basílica de São Pedro (Vaticano)',
-        'Capela Sistina (Museus do Vaticano)',
-        'Basílica de São João de Latrão',
+        'St. Peter’s Basilica (Vatican)',
+        'Sistine Chapel (Vatican Museums)',
+        'Basilica of St. John Lateran',
         'Santa Maria Maggiore',
         'Pantheon',
-        'Igreja de São Paulo Fora dos Muros'
+        'Basilica of St. Paul Outside the Walls'
       ],
       religiousMysterySummary:
-        'Follow a clue-based path through St. Peter’s Basilica, Sistine Chapel, St. John Lateran, Santa Maria Maggiore, Pantheon, and St. Paul Outside the Walls.',
+        'Religious mystery route through St. Peter’s Basilica, Sistine Chapel, St. John Lateran, Santa Maria Maggiore, Pantheon and St. Paul Outside the Walls using thematic clues.',
       generalMysterySummary:
-        'Mystery route through Coliseu, Fórum Romano, Panteão, Fontana di Trevi, Piazza Navona and Piazza Venezia using thematic clues.'
+        'General mystery route through Colosseum, Roman Forum, Pantheon, Trevi Fountain, Piazza Navona and Piazza Venezia with clue-based exploration.'
     }
   },
   Paris: {
-    generalRoute: ['Torre Eiffel', 'Museu do Louvre', 'Catedral de Notre-Dame', 'Montmartre', 'Champs-Élysées'],
+    // General Route
+    generalRoute: ['Eiffel Tower', 'Louvre Museum', 'Notre-Dame Cathedral', 'Montmartre', 'Champs-Élysées'],
     thematicRoutes: {
+      // Gastronomic Route
       gastronomic: [
         'Marché des Enfants Rouges',
         'Café de Flore',
@@ -472,47 +483,62 @@ const ROUTE_LIBRARY = {
         'Le Jules Verne'
       ],
       gastronomicMysterySummary:
-        'Mystery food trail using clues that move from Eiffel Tower area to Louvre, Notre-Dame, Montmartre and Champs-Élysées.',
+        'Gastronomic mystery route starting near the Eiffel Tower and moving through iconic markets, cafés and restaurants using food-themed clues.',
       generalMysterySummary:
-        'General mystery route through Eiffel Tower, Louvre, Notre-Dame, Montmartre, Champs-Élysées and Arc de Triomphe.'
+        'General mystery route Eiffel Tower → Louvre Museum → Notre-Dame Cathedral → Montmartre → Champs-Élysées → Arc de Triomphe.'
     }
   },
   Kyoto: {
+    // General Route
     generalRoute: ['Arashiyama Bamboo Grove', 'Iwatayama Monkey Park', 'Katsura River'],
     thematicRoutes: {
+      // Nature Route
       nature: ['Fushimi Inari Taisha', 'Kiyomizu-dera', 'Higashiyama', 'Yasaka Shrine'],
       natureMysterySummary:
         'Nature mystery route with clues that lead through Arashiyama Bamboo Grove, Iwatayama Monkey Park and Katsura River.'
     }
   },
   Tromso: {
-    generalRoute: ['Catedral do Ártico', 'Ponte de Tromsø', 'Polaria', 'Rua Storgata'],
+    // General Route
+    generalRoute: ['Arctic Cathedral', 'Tromsø Bridge', 'Polaria', 'Storgata Street'],
     thematicRoutes: {
-      adventure: ['Catedral do Ártico', 'Ponte de Tromsø', 'Polaria', 'Rua Storgata'],
+      // Adventure Route
+      adventure: ['Arctic Cathedral', 'Tromsø Bridge', 'Polaria', 'Storgata Street'],
       generalMysterySummary:
-        'Mystery route starting at Polaria and using clues to reach Rua Storgata, Ponte de Tromsø and Catedral do Ártico.',
+        'Mystery route starting at Polaria and using clues to reach Storgata Street, Tromsø Bridge and Arctic Cathedral.',
       adventureMysterySummary:
-        'Adventure mystery route repeating the Polaria → Storgata → Ponte de Tromsø → Catedral do Ártico sequence with adventure focus.'
+        'Adventure mystery route repeating the Polaria → Storgata Street → Tromsø Bridge → Arctic Cathedral sequence with an Arctic exploration focus.'
     }
   },
   'Monte Carlo': {
-    generalRoute: ['Praça do Casino', 'Casino de Monte Carlo', 'Porto de Mónaco (Port Hercule)', 'Palácio do Príncipe'],
+    // General Route
+    generalRoute: ['Casino Square', 'Monte Carlo Casino', 'Port Hercule', 'Prince’s Palace'],
     thematicRoutes: {
-      sunBeach: ['Praia do Larvotto', 'Promenade du Larvotto', 'Crique des Pêcheurs'],
+      // Sun & Beach Route
+      sunBeach: ['Larvotto Beach', 'Larvotto Promenade', 'Fisherman’s Cove'],
       generalMysterySummary:
-        'Mystery route Praça do Casino → Casino de Monte-Carlo → Porto de Mónaco → Palácio do Príncipe with clues about luxury and history.',
+        'Mystery route Casino Square → Monte Carlo Casino → Port Hercule → Prince’s Palace with clues about luxury, history and sea views.',
       sunBeachMysterySummary:
-        'Mystery sun & beach route Praia do Larvotto → Promenade du Larvotto → Crique des Pêcheurs with sea-themed clues.'
+        'Sun & beach mystery route Larvotto Beach → Larvotto Promenade → Fisherman’s Cove with sea-themed clues.'
     }
   },
   Barcelona: {
-    generalRoute: ['Sagrada Família', 'Park Güell', 'Casa Batlló', 'La Rambla', 'Barri Gòtic', 'Barceloneta Beach'],
+    // General Route
+    generalRoute: [
+      'Sagrada Família',
+      'Park Güell',
+      'Casa Batlló',
+      'La Rambla',
+      'Gothic Quarter',
+      'Barceloneta Beach'
+    ],
     thematicRoutes: {
-      cultural: ['Sagrada Família', 'Casa Batlló', 'La Pedrera', 'Barri Gòtic', 'Barcelona Cathedral'],
+      // Cultural Route
+      cultural: ['Sagrada Família', 'Casa Batlló', 'La Pedrera', 'Gothic Quarter', 'Barcelona Cathedral'],
       generalMysterySummary:
-        'General mystery route through Sagrada Família, Park Güell, Casa Batlló, La Rambla, Barri Gòtic and Barceloneta Beach.',
+        'General mystery route through Sagrada Família, Park Güell, Casa Batlló, La Rambla, Gothic Quarter and Barceloneta Beach.',
       culturalMysterySummary:
-        'Cultural mystery route focusing on Casa Batlló, La Pedrera and Barri Gòtic with Gaudí-inspired clues.'
+        'Cultural mystery route focusing on Sagrada Família, Casa Batlló, La Pedrera, Gothic Quarter and Barcelona Cathedral with Gaudí and old-town themed clues.'
     }
   }
 };
@@ -999,6 +1025,11 @@ function setupNavigation() {
   const homeSection = document.getElementById('homeSection');
   const visitadosSection = document.getElementById('visitadosSection');
   const logoHomeBtn = document.getElementById('logoHomeBtn');
+  const mobileNavToggle = document.getElementById('mobileNavToggle');
+  const mobileNavMenu = document.getElementById('mobileNavMenu');
+  const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+  const userNameLabel = document.getElementById('userNameLabel');
+  const mobileUserNameLabel = document.getElementById('mobileUserNameLabel');
 
   function showSection(target) {
     if (landingSection) landingSection.classList.add('hidden');
@@ -1016,6 +1047,14 @@ function setupNavigation() {
       }
     } else {
       homeSection.classList.remove('hidden');
+    }
+
+    // Close mobile menu when navigating
+    if (mobileNavMenu && mobileNavToggle) {
+      mobileNavMenu.classList.add('hidden');
+      mobileNavMenu.classList.add('pointer-events-none');
+      const drawer = mobileNavMenu.querySelector('aside');
+      if (drawer) drawer.classList.add('translate-x-full');
     }
   }
 
@@ -1037,6 +1076,43 @@ function setupNavigation() {
         b.classList.remove('text-brand', 'font-semibold', 'bg-brand-softer')
       );
       showSection('landing');
+    });
+  }
+
+  if (mobileNavToggle && mobileNavMenu) {
+    mobileNavToggle.addEventListener('click', () => {
+      const drawer = mobileNavMenu.querySelector('aside');
+      const isClosed = drawer && drawer.classList.contains('translate-x-full');
+      if (isClosed) {
+        mobileNavMenu.classList.remove('hidden');
+        mobileNavMenu.classList.remove('pointer-events-none');
+        if (drawer) drawer.classList.remove('translate-x-full');
+      } else {
+        mobileNavMenu.classList.add('pointer-events-none');
+        if (drawer) drawer.classList.add('translate-x-full');
+        setTimeout(() => {
+          mobileNavMenu.classList.add('hidden');
+        }, 200);
+      }
+
+      // Sync username into mobile menu when opening
+      if (isClosed && userNameLabel && mobileUserNameLabel) {
+        mobileUserNameLabel.textContent = userNameLabel.textContent || '';
+      }
+    });
+  }
+
+  if (mobileNavMenu) {
+    mobileNavMenu.addEventListener('click', (e) => {
+      const drawer = mobileNavMenu.querySelector('aside');
+      const clickInsideDrawer = drawer && drawer.contains(e.target);
+      if (clickInsideDrawer) return;
+
+      mobileNavMenu.classList.add('pointer-events-none');
+      if (drawer) drawer.classList.add('translate-x-full');
+      setTimeout(() => {
+        mobileNavMenu.classList.add('hidden');
+      }, 200);
     });
   }
 }
@@ -1066,12 +1142,25 @@ function applyTheme(theme) {
 
 function setupThemeToggle() {
   const btn = document.getElementById('themeToggle');
-  if (!btn) return;
+  const btnMobile = document.getElementById('themeToggleMobile');
+  const labelMobile = document.getElementById('themeLabelMobile');
 
-  btn.addEventListener('click', () => {
-    const newTheme = state.theme === 'dark' ? 'light' : 'dark';
-    applyTheme(newTheme);
-  });
+  function wire(button) {
+    if (!button) return;
+    button.addEventListener('click', () => {
+      const newTheme = state.theme === 'dark' ? 'light' : 'dark';
+      applyTheme(newTheme);
+      if (labelMobile) {
+        labelMobile.textContent = newTheme === 'dark' ? 'Dark' : 'Light';
+        if (labelMobile.nextSibling) {
+          labelMobile.nextSibling.textContent = newTheme === 'dark' ? '🌙' : '🌞';
+        }
+      }
+    });
+  }
+
+  wire(btn);
+  wire(btnMobile);
 }
 
 // Export JSON
@@ -1416,8 +1505,11 @@ function setupListeners() {
 
   // Logout
   const logoutBtn = document.getElementById('logoutBtn');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
+  const logoutBtnMobile = document.getElementById('logoutBtnMobile');
+
+  function attachLogout(btn) {
+    if (!btn) return;
+    btn.addEventListener('click', () => {
       setActiveUser(null);
       state = { ...initialState, theme: state.theme };
       syncUIFromState();
@@ -1427,9 +1519,16 @@ function setupListeners() {
       if (userInfo) userInfo.classList.add('hidden');
       if (appShell) appShell.classList.add('hidden');
       if (authSection) authSection.classList.remove('hidden');
+      const mobileNavMenuEl = document.getElementById('mobileNavMenu');
+      if (mobileNavMenuEl) {
+        mobileNavMenuEl.classList.add('hidden', 'pointer-events-none');
+      }
       showToast('Session ended.', 'info');
     });
   }
+
+  attachLogout(logoutBtn);
+  attachLogout(logoutBtnMobile);
 }
 
 // Mystery trip: helpers

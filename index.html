@@ -187,8 +187,8 @@
             />
           </button>
 
-          <div class="flex items-center gap-4">
-            <!-- Navigation -->
+          <div class="flex items-center gap-3">
+            <!-- Desktop navigation -->
             <nav class="hidden sm:flex items-center gap-2 text-sm font-medium">
               <button
                 data-nav="landing"
@@ -210,7 +210,21 @@
               </button>
             </nav>
 
-            <!-- Current user -->
+            <!-- Mobile hamburger -->
+            <button
+              id="mobileNavToggle"
+              class="sm:hidden inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 dark:hover:bg-slate-700"
+              aria-label="Toggle navigation"
+            >
+              <span class="sr-only">Toggle navigation</span>
+              <span class="flex flex-col gap-0.5">
+                <span class="h-0.5 w-4 bg-slate-700 dark:bg-slate-100 rounded-full"></span>
+                <span class="h-0.5 w-4 bg-slate-700 dark:bg-slate-100 rounded-full"></span>
+                <span class="h-0.5 w-4 bg-slate-700 dark:bg-slate-100 rounded-full"></span>
+              </span>
+            </button>
+
+            <!-- Current user (desktop only) -->
             <div
               id="userInfo"
               class="hidden sm:flex items-center gap-2 text-xs sm:text-sm text-slate-600 dark:text-slate-200"
@@ -225,15 +239,79 @@
               </button>
             </div>
 
-            <!-- Toggle Dark / Light -->
+            <!-- Toggle Dark / Light (desktop only) -->
             <button
               id="themeToggle"
-              class="ml-2 inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 dark:hover:bg-slate-700"
+              class="ml-1 hidden sm:inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700 dark:hover:bg-slate-700"
             >
               <span class="mr-1" id="themeLabel">Light</span>
               <span aria-hidden="true">🌞</span>
             </button>
           </div>
+        </div>
+
+        <!-- Mobile side drawer menu -->
+        <div
+          id="mobileNavMenu"
+          class="sm:hidden pointer-events-none fixed inset-0 z-[70] hidden"
+        >
+          <!-- Overlay -->
+          <div
+            id="mobileNavOverlay"
+            class="absolute inset-0 bg-slate-950"
+          ></div>
+          <!-- Drawer (slides in from the right) -->
+          <aside
+            class="relative ml-auto h-full w-64 max-w-[75vw] bg-slate-800 text-slate-50 border-l border-slate-700 shadow-xl transform translate-x-full transition-transform duration-200 ease-out flex flex-col"
+          >
+            <div class="px-4 pt-4 pb-3 border-b border-slate-700 bg-slate-800">
+              <p class="text-xs uppercase tracking-wide text-slate-300">
+                Menu
+              </p>
+            </div>
+            <div class="flex-1 px-4 py-3 flex flex-col gap-2 text-sm font-medium bg-slate-800">
+              <button
+                data-nav="landing"
+                class="nav-link block w-full rounded-full bg-amber-100 px-3 py-1.5 text-left text-amber-900 border border-amber-300"
+              >
+                Mystery Trip
+              </button>
+              <button
+                data-nav="profile"
+                class="nav-link block w-full rounded-full px-3 py-1.5 text-left text-slate-900 bg-slate-200"
+              >
+                Profile
+              </button>
+              <button
+                data-nav="visitados"
+                class="nav-link block w-full rounded-full px-3 py-1.5 text-left text-slate-900 bg-slate-200"
+              >
+                Visited countries
+              </button>
+            </div>
+            <div class="px-4 pb-4 pt-2 border-t border-slate-700 bg-slate-800 text-xs">
+              <p class="mb-2 text-slate-300">Account</p>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span id="mobileUserNameLabel" class="text-[0.75rem] text-slate-100">
+                  <!-- filled from JS -->
+                </span>
+                <button
+                  id="logoutBtnMobile"
+                  class="inline-flex items-center justify-center rounded-full border border-slate-400 bg-slate-800 px-2 py-0.5 text-[0.7rem] font-medium text-slate-100 shadow-sm hover:bg-slate-700"
+                >
+                  Logout
+                </button>
+              </div>
+              <p class="mb-1 text-slate-300">Theme</p>
+              <button
+                id="themeToggleMobile"
+                class="mt-1 inline-flex items-center justify-center rounded-full border border-slate-500 bg-slate-800 px-2.5 py-1.5 text-[0.7rem] font-medium text-slate-100 shadow-sm hover:bg-slate-700"
+              >
+                <span class="mr-1" id="themeLabelMobile">Light</span>
+                <span aria-hidden="true">🌞</span>
+              </button>
+            </div>
+          </aside>
         </div>
       </header>
 

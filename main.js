@@ -3,7 +3,7 @@ const initialState = {
   passaporte: null,
   been: [],
   theme: 'light',
-  departureAirport: 'Aeroporto Francisco Sá Carneiro (Porto)',
+  departureAirport: 'Airport Francisco Sá Carneiro (Porto)',
   availabilityStart: '',
   availabilityEnd: '',
   stayDays: 1,
@@ -13,7 +13,7 @@ const initialState = {
   badges: [],
   generatedTrips: [],
   viagemMisterio: {
-    aeroporto: 'Aeroporto Francisco Sá Carneiro (Porto)',
+    aeroporto: 'Airport Francisco Sá Carneiro (Porto)',
     dataHora: '',
     portaEmbarque: '',
     portaAviao: '',
@@ -692,9 +692,20 @@ function renderCluesModal() {
   const textEl = document.getElementById('cluesText');
   const targetEl = document.getElementById('cluesTarget');
   const nextBtn = document.getElementById('cluesNextBtn');
+  const advanceBtn = document.getElementById('cluesAdvanceBtn');
   const doneHint = document.getElementById('cluesDoneHint');
 
-  if (!titleEl || !subtitleEl || !stepLabel || !progressLabel || !textEl || !targetEl || !nextBtn || !doneHint) {
+  if (
+    !titleEl ||
+    !subtitleEl ||
+    !stepLabel ||
+    !progressLabel ||
+    !textEl ||
+    !targetEl ||
+    !nextBtn ||
+    !advanceBtn ||
+    !doneHint
+  ) {
     return;
   }
 
@@ -706,7 +717,9 @@ function renderCluesModal() {
     progressLabel.textContent = '';
     textEl.textContent = 'This destination does not have a clue route yet.';
     targetEl.textContent = '';
+    targetEl.classList.add('hidden');
     nextBtn.classList.add('hidden');
+    advanceBtn.classList.add('hidden');
     doneHint.classList.add('hidden');
     return;
   }
@@ -724,7 +737,9 @@ function renderCluesModal() {
     progressLabel.textContent = `${total}/${total}`;
     textEl.textContent = 'You have completed all clues for this destination.';
     targetEl.textContent = '';
+    targetEl.classList.add('hidden');
     nextBtn.classList.add('hidden');
+    advanceBtn.classList.add('hidden');
     doneHint.classList.remove('hidden');
 
     const badgeId = `mystery_${city}_${tripTheme || 'general'}`;
@@ -749,7 +764,9 @@ function renderCluesModal() {
   progressLabel.textContent = `${clueIndex + 1}/${total}`;
   textEl.textContent = step.text;
   targetEl.textContent = step.target ? `→ ${step.target}` : '';
+  targetEl.classList.add('hidden');
   nextBtn.classList.remove('hidden');
+  advanceBtn.classList.add('hidden');
   doneHint.classList.add('hidden');
 }
 
@@ -1552,6 +1569,7 @@ function setupListeners() {
   const cluesModal = document.getElementById('cluesModal');
   const cluesModalCloseBtn = document.getElementById('cluesModalCloseBtn');
   const cluesNextBtn = document.getElementById('cluesNextBtn');
+  const cluesAdvanceBtn = document.getElementById('cluesAdvanceBtn');
 
   if (dataHoraInput) {
     dataHoraInput.addEventListener('change', (e) => {
@@ -1656,6 +1674,18 @@ function setupListeners() {
   }
   if (cluesNextBtn) {
     cluesNextBtn.addEventListener('click', () => {
+      const targetEl = document.getElementById('cluesTarget');
+      if (targetEl && targetEl.classList.contains('hidden')) {
+        targetEl.classList.remove('hidden');
+        const advanceBtn = document.getElementById('cluesAdvanceBtn');
+        if (advanceBtn) advanceBtn.classList.remove('hidden');
+        return;
+      }
+    });
+  }
+
+  if (cluesAdvanceBtn) {
+    cluesAdvanceBtn.addEventListener('click', () => {
       const city = state.viagemMisterio.destinationCity;
       const steps = getClueStepsForCity(city, state.tripType);
       if (!steps.length) return;

@@ -544,15 +544,213 @@ const ROUTE_LIBRARY = {
 };
 
 function getMysteryCluesForCity(city, tripTheme) {
-  const data = ROUTE_LIBRARY[city];
-  if (!data) return [];
-  const general = data.generalRoute || [];
-  const thematic = (data.thematicRoutes && data.thematicRoutes[tripTheme]) || [];
-  const baseList = thematic.length ? thematic : general;
-  return baseList.map(
-    (stop, index) =>
-      `Clue ${index + 1}: find the location associated with “${stop}” following the hints provided in your printed mystery booklet.`
-  );
+  return getClueStepsForCity(city, tripTheme).map((s) => s.text);
+}
+
+const CLUE_LIBRARY = {
+  Rome: {
+    religious: [
+      {
+        title: 'Clue 1',
+        text:
+          'In the heart of a walled city-state, a keeper of keys rests among embracing columns. Beneath the gaze of masters from centuries past, find the place where heaven meets stone and even kings bow in silence.',
+        target: 'St. Peter’s Basilica (Vatican)'
+      },
+      {
+        title: 'Clue 2',
+        text:
+          'Seek the space where heaven was painted above, where hands reached for the divine through color and light. Silence reigns—but every glance reveals a hidden story.',
+        target: 'Sistine Chapel (Vatican Museums)'
+      },
+      {
+        title: 'Clue 3',
+        text:
+          'The mother of all churches calls to those who follow the first of many. Its doors echo with crowns, its walls whisper of saints.',
+        target: 'Basilica of St. John Lateran'
+      },
+      {
+        title: 'Clue 4',
+        text:
+          'Golden within and radiant without, it welcomes travelers with star-like mosaics. Listen closely—ancient devotion still lingers here.',
+        target: 'Santa Maria Maggiore'
+      },
+      {
+        title: 'Clue 5',
+        text:
+          'Once home to many gods, now devoted to one. Its dome watches like an open eye, where emperors once dreamed of touching the sky.',
+        target: 'Pantheon'
+      },
+      {
+        title: 'Clue 6',
+        text:
+          'Beyond the ancient walls, an apostle rests. Quiet gardens guide your path, while mosaics tell stories of faith carried to the edges of an empire.',
+        target: 'Basilica of St. Paul Outside the Walls'
+      }
+    ],
+    general: [
+      { title: 'Colosseum', text: 'A stone giant where echoes of glory and battle still roar.', target: 'Colosseum' },
+      { title: 'Roman Forum', text: 'Ruins that whisper power, politics, and empire.', target: 'Roman Forum' },
+      { title: 'Pantheon', text: 'A perfect dome beneath an open sky—timeless and watching.', target: 'Pantheon' },
+      { title: 'Trevi Fountain', text: 'Where wishes flow with water and coins carry hope.', target: 'Trevi Fountain' },
+      { title: 'Piazza Navona', text: 'Art, movement, and life in perfect harmony.', target: 'Piazza Navona' },
+      { title: 'Piazza Venezia', text: 'A meeting point of history, power, and legacy.', target: 'Piazza Venezia' }
+    ]
+  },
+  Paris: {
+    general: [
+      { title: 'Clue 1', text: 'You begin where iron meets the sky. Follow the river’s path toward timeless masterpieces.', target: 'Louvre Museum' },
+      { title: 'Clue 2', text: 'Glass pyramids and mysterious smiles surround you. Now follow the sound of bells through stone and light.', target: 'Notre-Dame Cathedral' },
+      { title: 'Clue 3', text: 'Gargoyles watch as the city unfolds below. Then climb toward the hill of artists and dreamers.', target: 'Montmartre' },
+      { title: 'Clue 4', text: 'Descend into elegance and light, where the city’s most famous avenue awaits.', target: 'Champs-Élysées' },
+      { title: 'Final clue', text: 'Follow the avenue to a monument of victory and pride.', target: 'Arc de Triomphe' }
+    ],
+    gastronomic: [
+      {
+        title: 'Gastronomic route',
+        text: 'Follow the gastronomic route list and explore each stop at your own pace.',
+        target: 'Marché des Enfants Rouges → Café de Flore → Le Comptoir du Relais → Ladurée → Le Jules Verne'
+      }
+    ]
+  },
+  Kyoto: {
+    general: [
+      { title: 'Clue 1', text: 'I am tall, green, and endless. The wind sings through me.', target: 'Arashiyama Bamboo Grove' },
+      { title: 'Clue 2', text: 'Climb high to meet playful guardians with tails and curious eyes.', target: 'Iwatayama Monkey Park' },
+      { title: 'Clue 3', text: 'I flow gently, reflecting sky and mountains.', target: 'Katsura River' }
+    ]
+  },
+  Tromso: {
+    adventure: [
+      { title: 'Clue 1', text: 'Ice and life meet where science tells Arctic stories.', target: 'Polaria' },
+      { title: 'Clue 2', text: 'A lively street—now find the path that curves over water.', target: 'Storgata Street' },
+      { title: 'Clue 3', text: 'Walk above reflections of mountains and sea.', target: 'Tromsø Bridge' },
+      { title: 'Final clue', text: 'Sharp lines rise toward the sky—glass and light define this northern icon.', target: 'Arctic Cathedral' }
+    ],
+    general: [
+      { title: 'Clue 1', text: 'Ice and life meet where science tells Arctic stories.', target: 'Polaria' },
+      { title: 'Clue 2', text: 'A lively street—now find the path that curves over water.', target: 'Storgata Street' },
+      { title: 'Clue 3', text: 'Walk above reflections of mountains and sea.', target: 'Tromsø Bridge' },
+      { title: 'Final clue', text: 'Sharp lines rise toward the sky—glass and light define this northern icon.', target: 'Arctic Cathedral' }
+    ]
+  },
+  'Monte Carlo': {
+    general: [
+      { title: 'Casino Square', text: 'Luxury never sleeps—find the building that keeps time.', target: 'Casino Square' },
+      { title: 'Casino', text: 'Where fortune dances under golden lights.', target: 'Monte Carlo Casino' },
+      { title: 'Harbor', text: 'Yachts rest where the sea meets prestige.', target: 'Port Hercule' },
+      { title: 'Palace', text: 'Climb to where royalty watches over the Mediterranean.', target: 'Prince’s Palace' }
+    ]
+  },
+  Barcelona: {
+    general: [
+      { title: 'Clue 1', text: 'A towering masterpiece of color and light.', target: 'Sagrada Família' },
+      { title: 'Clue 2', text: 'A world of mosaics, curves, and fantasy.', target: 'Park Güell' },
+      { title: 'Clue 3', text: 'A living building shaped by imagination.', target: 'Casa Batlló' },
+      { title: 'Clue 4', text: 'A vibrant street full of life and movement.', target: 'La Rambla' },
+      { title: 'Clue 5', text: 'Ancient alleys whisper stories of the past.', target: 'Gothic Quarter' },
+      { title: 'Final clue', text: 'Sun, sea, and sand welcome you to the perfect ending.', target: 'Barceloneta Beach' }
+    ]
+  }
+};
+
+function getClueStepsForCity(city, tripTheme) {
+  const cityData = CLUE_LIBRARY[city];
+  if (!cityData) return [];
+  const themed = tripTheme && cityData[tripTheme];
+  const steps = themed && themed.length ? themed : cityData.general || [];
+  return steps.map((s) => ({
+    title: s.title || 'Clue',
+    text: s.text || '',
+    target: s.target || ''
+  }));
+}
+
+function openCluesModal() {
+  const modal = document.getElementById('cluesModal');
+  if (!modal) return;
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  renderCluesModal();
+}
+
+function closeCluesModal() {
+  const modal = document.getElementById('cluesModal');
+  if (!modal) return;
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+}
+
+function renderCluesModal() {
+  const city = state.viagemMisterio.destinationCity;
+  const tripTheme = state.tripType;
+  const steps = getClueStepsForCity(city, tripTheme);
+
+  const titleEl = document.getElementById('cluesModalTitle');
+  const subtitleEl = document.getElementById('cluesModalSubtitle');
+  const stepLabel = document.getElementById('cluesStepLabel');
+  const progressLabel = document.getElementById('cluesProgressLabel');
+  const textEl = document.getElementById('cluesText');
+  const targetEl = document.getElementById('cluesTarget');
+  const nextBtn = document.getElementById('cluesNextBtn');
+  const doneHint = document.getElementById('cluesDoneHint');
+
+  if (!titleEl || !subtitleEl || !stepLabel || !progressLabel || !textEl || !targetEl || !nextBtn || !doneHint) {
+    return;
+  }
+
+  titleEl.textContent = city ? `${city} · Clues` : 'Clues';
+  subtitleEl.textContent = tripTheme ? `Route type: ${tripTheme}` : '';
+
+  if (!steps.length) {
+    stepLabel.textContent = 'No clues available';
+    progressLabel.textContent = '';
+    textEl.textContent = 'This destination does not have a clue route yet.';
+    targetEl.textContent = '';
+    nextBtn.classList.add('hidden');
+    doneHint.classList.add('hidden');
+    return;
+  }
+
+  const total = steps.length;
+  const currentStep =
+    typeof state.viagemMisterio.mysteryStep === 'number' && state.viagemMisterio.mysteryStep >= 0
+      ? state.viagemMisterio.mysteryStep
+      : 0;
+  const clueIndex = Math.min(currentStep, total - 1);
+  const completed = !!state.viagemMisterio.mysteryCompleted || currentStep >= total;
+
+  if (completed) {
+    stepLabel.textContent = 'Completed';
+    progressLabel.textContent = `${total}/${total}`;
+    textEl.textContent = 'You have completed all clues for this destination.';
+    targetEl.textContent = '';
+    nextBtn.classList.add('hidden');
+    doneHint.classList.remove('hidden');
+
+    const badgeId = `mystery_${city}_${tripTheme || 'general'}`;
+    const already = (state.badges || []).some((b) => b && b.id === badgeId);
+    if (!already) {
+      state.badges.push({
+        id: badgeId,
+        city,
+        tripType: tripTheme || null,
+        type: 'mystery_route',
+        title: 'The Unknown Explorer',
+        earnedAt: new Date().toISOString()
+      });
+      saveToStorage();
+      renderBadgesPanel();
+    }
+    return;
+  }
+
+  const step = steps[clueIndex];
+  stepLabel.textContent = step.title || `Clue ${clueIndex + 1}`;
+  progressLabel.textContent = `${clueIndex + 1}/${total}`;
+  textEl.textContent = step.text;
+  targetEl.textContent = step.target ? `→ ${step.target}` : '';
+  nextBtn.classList.remove('hidden');
+  doneHint.classList.add('hidden');
 }
 
 const DESTINATION_RULES = [
@@ -1351,6 +1549,9 @@ function setupListeners() {
   const mysteryHubSection = document.getElementById('mysteryHubSection');
   const suggestionAcceptBtn = document.getElementById('suggestionAcceptBtn');
   const suggestionCancelBtn = document.getElementById('suggestionCancelBtn');
+  const cluesModal = document.getElementById('cluesModal');
+  const cluesModalCloseBtn = document.getElementById('cluesModalCloseBtn');
+  const cluesNextBtn = document.getElementById('cluesNextBtn');
 
   if (dataHoraInput) {
     dataHoraInput.addEventListener('change', (e) => {
@@ -1438,6 +1639,40 @@ function setupListeners() {
     suggestionCancelBtn.addEventListener('click', () => {
       closeSuggestionModal();
       showToast('No trip was generated for that combination.', 'info');
+    });
+  }
+
+  if (cluesModalCloseBtn) {
+    cluesModalCloseBtn.addEventListener('click', () => {
+      closeCluesModal();
+    });
+  }
+  if (cluesModal) {
+    cluesModal.addEventListener('click', (e) => {
+      const panel = cluesModal.querySelector('div.relative.w-full');
+      if (panel && panel.contains(e.target)) return;
+      closeCluesModal();
+    });
+  }
+  if (cluesNextBtn) {
+    cluesNextBtn.addEventListener('click', () => {
+      const city = state.viagemMisterio.destinationCity;
+      const steps = getClueStepsForCity(city, state.tripType);
+      if (!steps.length) return;
+      const total = steps.length;
+      const currentStep =
+        typeof state.viagemMisterio.mysteryStep === 'number' && state.viagemMisterio.mysteryStep >= 0
+          ? state.viagemMisterio.mysteryStep
+          : 0;
+      const nextStep = currentStep + 1;
+      state.viagemMisterio.mysteryStep = nextStep;
+      if (nextStep >= total) {
+        state.viagemMisterio.mysteryCompleted = true;
+        showToast('Mystery route completed! Badge unlocked.', 'success');
+      }
+      saveToStorage();
+      renderCluesModal();
+      renderBadgesPanel();
     });
   }
 
@@ -1834,8 +2069,16 @@ function renderRouteContent() {
             </span>
           </div>
         </div>
-        <div id="mysteryGameInner" class="relative mt-2 rounded-lg border border-slate-700/80 bg-slate-900/70 px-3 py-2.5 text-xs text-slate-100">
-          <!-- filled by JS below -->
+        <div class="relative mt-2 rounded-lg border border-slate-700/80 bg-slate-900/70 px-3 py-3 text-xs text-slate-100">
+          <p class="text-[0.8rem] text-slate-200">
+            Play the clue game directly in the app.
+          </p>
+          <button
+            id="openCluesModalBtn"
+            class="mt-3 inline-flex items-center justify-center rounded-full bg-amber-400 px-3.5 py-1.5 text-[0.75rem] font-semibold text-amber-950 shadow hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1 focus:ring-offset-slate-900 transition"
+          >
+            Open clues
+          </button>
         </div>
       </article>
     `);
@@ -1843,88 +2086,10 @@ function renderRouteContent() {
 
   container.innerHTML = `<div class="grid gap-3 sm:grid-cols-2">${cards.join('')}</div>`;
 
-  // Mystery mini‑game: step-by-step clues
-  if (!themedMysterySummary) return;
-  const clues = getMysteryCluesForCity(city, tripTheme);
-  if (!clues.length) return;
-  const inner = document.getElementById('mysteryGameInner');
-  if (!inner) return;
-
-  const total = clues.length;
-  const currentStep =
-    typeof state.viagemMisterio.mysteryStep === 'number' && state.viagemMisterio.mysteryStep >= 0
-      ? state.viagemMisterio.mysteryStep
-      : 0;
-  const completed = !!state.viagemMisterio.mysteryCompleted || currentStep >= total;
-
-  if (completed) {
-    inner.innerHTML = `
-      <div class="mb-2 flex items-center justify-between gap-2">
-        <p class="font-semibold">All locations found!</p>
-        <span class="inline-flex items-center rounded-full bg-emerald-500/90 px-2 py-0.5 text-[0.65rem] font-semibold text-emerald-950">
-          Badge unlocked
-        </span>
-      </div>
-      <p class="mb-2 text-[0.8rem]">You have completed the mystery route for <strong>${city}</strong>.</p>
-      <div class="flex items-center gap-2 mt-1">
-        <div class="h-8 w-8 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 text-sm font-extrabold shadow">
-          ✦
-        </div>
-        <div>
-          <p class="text-[0.75rem] font-semibold">The Unknown Explorer</p>
-          <p class="text-[0.7rem] text-slate-300">Mystery badge added to your journey log.</p>
-        </div>
-      </div>
-    `;
-    // Ensure badge is stored
-    const badgeId = `mystery_${city}_${tripTheme || 'general'}`;
-    const already = (state.badges || []).some((b) => b && b.id === badgeId);
-    if (!already) {
-      state.badges.push({
-        id: badgeId,
-        city,
-        tripType: tripTheme || null,
-        type: 'mystery_route',
-        title: 'The Unknown Explorer',
-        earnedAt: new Date().toISOString()
-      });
-      saveToStorage();
-    }
-    return;
-  }
-
-  const clueIndex = Math.min(currentStep, total - 1);
-  inner.innerHTML = `
-    <div class="mb-2 flex items-center justify-between gap-2">
-      <p class="font-semibold text-[0.8rem]">Clue ${clueIndex + 1} of ${total}</p>
-      <div class="flex items-center gap-1 text-[0.65rem] text-slate-300">
-        <span class="inline-flex h-1.5 w-16 overflow-hidden rounded-full bg-slate-800">
-          <span class="h-1.5 bg-amber-400" style="width: ${(100 * (clueIndex + 1)) / total}%"></span>
-        </span>
-        <span>${clueIndex + 1}/${total}</span>
-      </div>
-    </div>
-    <p class="mb-3 leading-snug">${clues[clueIndex]}</p>
-    <button
-      id="mysteryNextClueBtn"
-      class="inline-flex items-center justify-center rounded-full bg-amber-400 px-3.5 py-1.5 text-[0.75rem] font-semibold text-amber-950 shadow hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1 focus:ring-offset-slate-900 transition"
-    >
-      <span class="mr-1" aria-hidden="true">✔</span> I found this place
-    </button>
-  `;
-
-  const btn = document.getElementById('mysteryNextClueBtn');
-  if (btn) {
-    btn.addEventListener('click', () => {
-      const nextStep = clueIndex + 1;
-      state.viagemMisterio.mysteryStep = nextStep;
-      if (nextStep >= total) {
-        state.viagemMisterio.mysteryCompleted = true;
-        showToast('Mystery route completed! Reward unlocked.', 'success');
-        // badge will be written by completed-render branch on next render
-      }
-      saveToStorage();
-      renderRouteContent();
+  const openBtn = document.getElementById('openCluesModalBtn');
+  if (openBtn) {
+    openBtn.addEventListener('click', () => {
+      openCluesModal();
     });
   }
 }
